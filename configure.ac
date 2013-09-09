@@ -31,25 +31,41 @@ AC_DEFUN([ADD_CPPFLAGS], [CPPFLAGS="$CPPFLAGS $1"])
 AC_DEFUN([ADD_LDFLAGS], [LDFLAGS="$LDFLAGS $1"])
 
 AC_DEFUN([CHECK_LIB],
-    [AC_MSG_CHECKING([whether lib$2 is available])
+    [AC_MSG_CHECKING([whether lib$1 is available])
+
      orig_ldflags="$LDFLAGS"
-     ADD_LDFLAGS([-l$2])
+     ADD_LDFLAGS([-l$1])
+
      AC_LINK_IFELSE([AC_LANG_PROGRAM([], [])],
-         [$1_LIBS="-l$2"
-          AC_SUBST([$1_LIBS])
+         [DEP_LIBS="$DEP_LIBS -l$1"
+
           AC_MSG_RESULT([yes])],
-         [$1_LIBS=""
-          AC_SUBST([$1_LIBS])
-          $3])
+         [$2])
+
      LDFLAGS="$orig_ldflags"])
 
-CHECK_LIB([DL], [dl], [AC_MSG_FAILURE([libdl is not available])])
-CHECK_LIB([M], [m], [AC_MSG_FAILURE([libm is not available])])
-CHECK_LIB([PTHREAD], [pthread], [AC_MSG_FAILURE([libpthread is not available])])
-CHECK_LIB([BLOCKSRUNTIME], [BlocksRuntime], [AC_MSG_FAILURE([libBlocksRuntime is not available])])
-CHECK_LIB([E_HOST], [e_host])
+AC_DEFUN([CHECK_PKG],
+    [PKG_CHECK_MODULES([$1], [$2])
 
-PKG_CHECK_MODULES([GLIB], [glib-2.0])
+     DEP_PKG_NAMES="$DEP_PKG_NAMES $2"
+     DEP_PKG_CFLAGS="$DEP_PKG_CFLAGS $$1_CFLAGS"
+     DEP_PKG_LIBS="$DEP_PKG_LIBS $$1_LIBS"])
+
+CHECK_LIB([dl], [AC_MSG_FAILURE([libdl is not available])])
+CHECK_LIB([m], [AC_MSG_FAILURE([libm is not available])])
+CHECK_LIB([pthread], [AC_MSG_FAILURE([libpthread is not available])])
+CHECK_LIB([BlocksRuntime], [AC_MSG_FAILURE([libBlocksRuntime is not available])])
+CHECK_LIB([gmp], [AC_MSG_FAILURE([libgmp is not available])])
+CHECK_LIB([e_host])
+
+CHECK_PKG([libglib], [glib-2.0])
+CHECK_PKG([libffi], [libffi])
+CHECK_PKG([libedit], [libedit])
+
+AC_SUBST([DEP_LIBS])
+AC_SUBST([DEP_PKG_NAMES])
+AC_SUBST([DEP_PKG_CFLAGS])
+AC_SUBST([DEP_PKG_LIBS])
 
 AC_ARG_ENABLE(
     [debug],

@@ -8,13 +8,18 @@ system is written with Autotools and so requires Autoconf, Automake, etc.
 The following libraries are required to build:
 
 * (e)glibc (libc, libm, libdl, libpthread)
+* BlocksRuntime (libBlocksRuntime)
 * GLib (libglib-2.0)
+* GMP (libgmp)
+* editline (libedit)
+* libffi (libffi)
+
+The following libraries are required for Epiphany support:
+
 * eSDK (libe_host)
 
-ParaVM is mainly meant to be built directly on a Parallella board (or some
-other ARM board with Epiphany accelerator cores), but there's no particular
-reason that cross-compiling it wouldn't work.
+If the eSDK is not present, ParaVM will be compiled in emulation mode, in
+which case only the emulator is available. If you need JIT compiler support,
+be sure to compile with the eSDK.
 
-ParaVM only runs on ARM systems with an ARMv7 or better CPU. Additionally,
-it requires at least one Epiphany accelerator core to function. The only
-supported operating system is Linux.
+The only supported operating system is Linux.
