@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: @PACKAGE_NAME@
+Description: Parallella Virtual Machine
+Version: @PACKAGE_VERSION@
+URL: @PACKAGE_URL@
+Requires: glib-2.0
+Libs: -L${libdir} -lparavm
+Libs.private: -ldl -lm -pthread -le_host -licui18n -licuuc -licudata
+Cflags: -I${includedir}/paravm
