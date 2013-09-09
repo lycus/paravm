@@ -9,5 +9,5 @@ Version: @PACKAGE_VERSION@
 URL: @PACKAGE_URL@
 Requires: glib-2.0
 Libs: -L${libdir} -lparavm
-Libs.private: @DL_LIBS@ @M_LIBS@ @PTHREAD_LIBS@ @E_HOST_LIBS@
+Libs.private: @DL_LIBS@ @M_LIBS@ @PTHREAD_LIBS@ @BLOCKSRUNTIME_LIBS@ @E_HOST_LIBS@
 Cflags: -I${includedir}/paravm

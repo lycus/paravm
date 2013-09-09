@@ -46,6 +46,7 @@ AC_DEFUN([CHECK_LIB],
 CHECK_LIB([DL], [dl], [AC_MSG_FAILURE([libdl is not available])])
 CHECK_LIB([M], [m], [AC_MSG_FAILURE([libm is not available])])
 CHECK_LIB([PTHREAD], [pthread], [AC_MSG_FAILURE([libpthread is not available])])
+CHECK_LIB([BLOCKSRUNTIME], [BlocksRuntime], [AC_MSG_FAILURE([libBlocksRuntime is not available])])
 CHECK_LIB([E_HOST], [e_host])
 
 PKG_CHECK_MODULES([GLIB], [glib-2.0])
