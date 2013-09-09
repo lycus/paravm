@@ -1,4 +1,6 @@
 AC_INIT([paravm], [0.0.0], [https://github.com/lycus/paravm/issues], [paravm], [http://paravm.org])
+AC_CONFIG_SRCDIR([README])
+AC_CONFIG_MACRO_DIR([m4])
 AC_CANONICAL_HOST()
 
 # Get rid of the default -g -O2 added by AC_PROG_CC.

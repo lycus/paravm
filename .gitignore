@@ -12,6 +12,7 @@
 /install-sh
 /libtool
 /ltmain.sh
+/m4/*
 /missing
 /prelude.h
 /stamp-*
