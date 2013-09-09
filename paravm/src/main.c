@@ -56,10 +56,6 @@ int main(int argc, char *argv[])
         }
     }
 
-    // Skip past all the options so we only have non-option arguments.
-    argc -= optind;
-    argv += optind;
-
     if (version)
     {
         printf("ParaVM - " PACKAGE_VERSION "\n");
@@ -75,6 +71,10 @@ int main(int argc, char *argv[])
 
     if (version || help)
         return 0;
+
+    // Skip past all the options so we only have non-option arguments.
+    argc -= optind;
+    argv += optind;
 
     if (!argc)
     {
