@@ -5,9 +5,9 @@ lib_LTLIBRARIES = libparavm.la
 libparavm_la_SOURCES = \
 	src/common.c
 
-libparavm_la_LIBADD = -ldl -lm @GLIB_LIBS@ -le_host
+libparavm_la_LIBADD = @DL_LIBS@ @M_LIBS@ @PTHREAD_LIBS@ @GLIB_LIBS@ @E_HOST_LIBS@
 libparavm_la_CFLAGS = @GLIB_CFLAGS@
-libparavm_la_LDFLAGS = -pthread -export-symbols-regex '^paravm_'
+libparavm_la_LDFLAGS = -export-symbols-regex '^paravm_'
 
 libparavmincludedir = $(includedir)/paravm
 

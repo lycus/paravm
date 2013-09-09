@@ -31,18 +31,22 @@ AC_DEFUN([ADD_CPPFLAGS], [CPPFLAGS="$CPPFLAGS $1"])
 AC_DEFUN([ADD_LDFLAGS], [LDFLAGS="$LDFLAGS $1"])
 
 AC_DEFUN([CHECK_LIB],
-    [AC_MSG_CHECKING([whether lib$1 is available])
+    [AC_MSG_CHECKING([whether lib$2 is available])
      orig_ldflags="$LDFLAGS"
-     ADD_LDFLAGS([-l$1])
+     ADD_LDFLAGS([-l$2])
      AC_LINK_IFELSE([AC_LANG_PROGRAM([], [])],
-         [AC_MSG_RESULT([yes])],
-         [AC_MSG_FAILURE([lib$1 is not available])])
+         [$1_LIBS="-l$2"
+          AC_SUBST([$1_LIBS])
+          AC_MSG_RESULT([yes])],
+         [$1_LIBS=""
+          AC_SUBST([$1_LIBS])
+          $3])
      LDFLAGS="$orig_ldflags"])
 
-CHECK_LIB([dl])
-CHECK_LIB([m])
-CHECK_LIB([pthread])
-CHECK_LIB([e_host])
+CHECK_LIB([DL], [dl], [AC_MSG_FAILURE([libdl is not available])])
+CHECK_LIB([M], [m], [AC_MSG_FAILURE([libm is not available])])
+CHECK_LIB([PTHREAD], [pthread], [AC_MSG_FAILURE([libpthread is not available])])
+CHECK_LIB([E_HOST], [e_host])
 
 PKG_CHECK_MODULES([GLIB], [glib-2.0])
 
@@ -83,7 +87,7 @@ ADD_CFLAGS([-Wcast-qual -Wwrite-strings -Wconversion -Wstrict-prototypes -Wold-s
 ADD_CFLAGS([-Wmissing-declarations -Wmissing-format-attribute -Wpadded -Wredundant-decls -Winline])
 
 # Set feature macros as per feature_test_macros(7).
-ADD_CPPFLAGS([-D_GNU_SOURCE=1 -D_FILE_OFFSET_BITS=64])
+ADD_CPPFLAGS([-D_GNU_SOURCE=1 -D_FILE_OFFSET_BITS=64 -D_REENTRANT=1])
 
 AC_CONFIG_FILES([Makefile paravm/Makefile paravm/paravm.pc:paravm/paravm.pc.in])
 
