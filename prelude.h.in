@@ -1,0 +1,7 @@
+/* This is a prelude file included via -include in all source files. */
+
+#pragma once
+
+#include "config.h"
+
+#include "internal/common.h"
