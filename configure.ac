@@ -37,9 +37,6 @@ CHECK_LIB([dl])
 CHECK_LIB([m])
 CHECK_LIB([pthread])
 CHECK_LIB([e_host])
-CHECK_LIB([icui18n])
-CHECK_LIB([icuuc])
-CHECK_LIB([icudata])
 
 PKG_CHECK_MODULES([GLIB], [glib-2.0])
 

@@ -10,7 +10,6 @@ The following libraries are required to build:
 * (e)glibc (libc, libm, libdl, libpthread)
 * GLib (libglib-2.0)
 * eSDK (libe_host)
-* ICU (libicui18n, libicuuc, libicudata)
 
 ParaVM is mainly meant to be built directly on a Parallella board (or some
 other ARM board with Epiphany accelerator cores), but there's no particular

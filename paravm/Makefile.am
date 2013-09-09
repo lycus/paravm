@@ -5,7 +5,7 @@ lib_LTLIBRARIES = libparavm.la
 libparavm_la_SOURCES = \
 	src/common.c
 
-libparavm_la_LIBADD = -ldl -lm @GLIB_LIBS@ -le_host -licui18n -licuuc -licudata
+libparavm_la_LIBADD = -ldl -lm @GLIB_LIBS@ -le_host
 libparavm_la_CFLAGS = @GLIB_CFLAGS@
 libparavm_la_LDFLAGS = -pthread -export-symbols-regex '^paravm_'
 

@@ -9,5 +9,5 @@ Version: @PACKAGE_VERSION@
 URL: @PACKAGE_URL@
 Requires: glib-2.0
 Libs: -L${libdir} -lparavm
-Libs.private: -ldl -lm -pthread -le_host -licui18n -licuuc -licudata
+Libs.private: -ldl -lm -pthread -le_host
 Cflags: -I${includedir}/paravm
