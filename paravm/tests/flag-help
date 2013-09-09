@@ -1,0 +1,5 @@
+. "${srcdir}/begin.sh"
+
+"${paravm}" --help > ${out}
+
+. "${srcdir}/end.sh"

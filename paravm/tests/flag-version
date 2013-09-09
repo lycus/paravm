@@ -1,0 +1,5 @@
+. "${srcdir}/begin.sh"
+
+"${paravm}" --version > /dev/null
+
+. "${srcdir}/end.sh"

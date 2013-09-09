@@ -1,0 +1,2 @@
+Usage: lt-paravm [--version] [--help] [options] <tool> <args>
+Please refer to `man 1 paravm`

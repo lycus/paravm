@@ -24,6 +24,8 @@
 *.log
 *.o
 *.pc
+*.out
+*.pvc
 
 .dirstamp
 Makefile
