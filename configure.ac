@@ -3,7 +3,6 @@ AC_CANONICAL_HOST()
 
 # Get rid of the default -g -O2 added by AC_PROG_CC.
 CFLAGS="$CFLAGS"
-
 AC_PROG_CC([clang cc])
 AC_CONFIG_HEADERS([config.h prelude.h])
 
@@ -19,6 +18,11 @@ AC_TRY_COMPILE(
      #endif],
     [AC_MSG_RESULT([yes])],
     [AC_MSG_FAILURE([the C compiler is not Clang 3.3+])])
+
+AM_INIT_AUTOMAKE([foreign subdir-objects])
+AM_SILENT_RULES([yes])
+
+LT_INIT()
 
 AC_DEFUN([ADD_CFLAGS], [CFLAGS="$CFLAGS $1"])
 AC_DEFUN([ADD_CPPFLAGS], [CPPFLAGS="$CPPFLAGS $1"])
@@ -78,11 +82,6 @@ ADD_CFLAGS([-Wmissing-declarations -Wmissing-format-attribute -Wpadded -Wredunda
 
 # Set feature macros as per feature_test_macros(7).
 ADD_CPPFLAGS([-D_GNU_SOURCE=1 -D_FILE_OFFSET_BITS=64])
-
-AM_INIT_AUTOMAKE([foreign subdir-objects])
-AM_SILENT_RULES([yes])
-
-LT_INIT()
 
 AC_CONFIG_FILES([Makefile paravm/Makefile paravm/paravm.pc:paravm/paravm.pc.in])
 
