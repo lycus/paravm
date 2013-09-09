@@ -28,7 +28,7 @@
 Makefile
 Makefile.in
 
-.deps/*
-.libs/*
+.deps
+.libs
 
 /paravm/paravm
