@@ -1,0 +1,17 @@
+            == ParaVM: Parallella Virtual Machine ==
+
+                -- Installation --
+
+ParaVM uses a fairly standard build system based on Autotools. If you're
+building from Git, do the typical:
+
+    $ autoreconf -f -i
+    $ mkdir build
+    $ cd build
+    $ ../configure --prefix=/opt/paravm
+    $ make
+    $ make check
+    $ make install
+
+If you're cross-compiling, you'll want to skip the make check command. If
+you're building from a tarball, you can skip the autoreconf command.

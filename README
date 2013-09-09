@@ -1,0 +1,33 @@
+            == ParaVM: Parallella Virtual Machine ==
+
+                -- Introduction --
+
+ParaVM is a virtual machine written specifically for the Epiphany processor
+achitecture. More specifically, it is meant to run on a host ARM system
+where it compiles code (in a JIT fashion) to Epiphany machine code that is
+executed on Epiphany accelerator cores in an isolated fashion similar to
+the concurreny model employed by Erlang. One such system is the Parallella
+board which ParaVM is primarily written for.
+
+For further information, see:
+
+    * LICENSE
+      - Licensing and copyright information.
+    * COMPATIBILITY
+      - Supported compilers, architectures, operating systems, etc.
+    * INSTALL
+      - Instructions on building and installing ParaVM.
+    * AUTHORS
+      - Names and contact information for ParaVM developers.
+    * CONTRIBUTING
+      - Notes and guidelines for contributors.
+
+You can reach the ParaVM community in several ways:
+
+    * IRC channels
+      - #lycus @ irc.oftc.net
+      - #paravm @ irc.oftc.net
+    * Mailing lists
+      - lycus-announce: http://groups.google.com/group/lycus-announce
+      - lycus-discuss: http://groups.google.com/group/lycus-discuss
+      - lycus-develop: http://groups.google.com/group/lycus-develop

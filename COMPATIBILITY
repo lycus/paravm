@@ -1,0 +1,20 @@
+            == ParaVM: Parallella Virtual Machine ==
+
+                -- Compatibility --
+
+ParaVM is written in Clang-flavored C11 and requires Clang 3.3+. The build
+system is written with Autotools and so requires Autoconf, Automake, etc.
+
+The following libraries are required to build:
+
+* (e)glibc (libc, libm, libdl, libpthread)
+* eSDK (libe_host)
+* ICU (libicui18n, libicuuc, libicudata)
+
+ParaVM is mainly meant to be built directly on a Parallella board (or some
+other ARM board with Epiphany accelerator cores), but there's no particular
+reason that cross-compiling it wouldn't work.
+
+ParaVM only runs on ARM systems with an ARMv7 or better CPU. Additionally,
+it requires at least one Epiphany accelerator core to function. The only
+supported operating system is Linux.

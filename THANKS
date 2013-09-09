@@ -1,0 +1,15 @@
+            == ParaVM: Parallella Virtual Machine ==
+
+                -- Thanks --
+
+The ParaVM developers would like to extend a "thank you" to the following
+projects and their developers for inspiration, great ideas, and advice:
+
+    * Elixir
+      - http://elixir-lang.org
+    * Erlang
+      - http://erlang.org
+    * Parallella
+      - http://parallella.org
+    * Rust
+      - http://www.rust-lang.org

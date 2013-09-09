@@ -1,0 +1,64 @@
+            == ParaVM: Parallella Virtual Machine ==
+
+                -- Style --
+
+This is a guide to the general code style used in the ParaVM source base.
+If you're contributing code to the project, you should make sure to
+follow these. We are rather strict about these rules as we believe that
+they help us keep a clean and consistent source base.
+
+        ++ Indentation ++
+
+We indent with 4 spaces, always, everywhere. Do not use hard tabs.
+
+        ++ Spacing ++
+
+One place where spacing is very important is in expressions. You should
+always put a space on all sides of binary and ternary operators, for example.
+Note that this is not necessary for unary operators.
+
+Spacing is not necessary in function calls either (other than after a comma).
+For example, you should do:
+
+    * foo()
+    * foo(bar)
+    * foo(bar, baz)
+
+It's recommended to use empty lines between lines that are not closely
+related. This helps a lot when skimming code.
+
+        ++ Naming ++
+
+We roughly follow the conventions used in most C code:
+
+    * Structures, unions, and most macros are PascalCase.
+    * Functions, variables, and parameters are snake_case.
+
+You should have a VERY good reason if you're going to deviate from these
+naming rules. We want to keep ParaVM's interfaces consistent with most
+other C code so using it doesn't feel awkward.
+
+        ++ Comments ++
+
+Comments should be written in clear, concise English with correct grammar
+(yes, this includes punctuation). Avoid using abbreviations and acronyms
+unless they are generally well-understood in the context. Also, you should
+avoid overly verbose comments (often referred to as literate programming),
+as they make it harder to read the code. In general, don't comment on the
+obvious or on things that are considered common sense.
+
+Bad comments:
+
+    * // do some space opts
+    * // revert to prev tok
+
+Good comments:
+
+    * // Do some space optimizations.
+    * // Revert to the previous token.
+
+        ++ Documentation ++
+
+Everything exposed in the public header files should have documentation
+associated with it, describing exactly what it does and/or where it's
+meant to be used.
