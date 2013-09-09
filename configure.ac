@@ -26,12 +26,12 @@ AC_DEFUN([ADD_LDFLAGS], [LDFLAGS="$LDFLAGS $1"])
 
 AC_DEFUN([CHECK_LIB],
     [AC_MSG_CHECKING([whether lib$1 is available])
-     ORIG_LDFLAGS="$LDFLAGS"
+     orig_ldflags="$LDFLAGS"
      ADD_LDFLAGS([-l$1])
      AC_LINK_IFELSE([AC_LANG_PROGRAM([], [])],
          [AC_MSG_RESULT([yes])],
          [AC_MSG_FAILURE([lib$1 is not available])])
-     LDFLAGS="$ORIG_LDFLAGS"])
+     LDFLAGS="$orig_ldflags"])
 
 CHECK_LIB([dl])
 CHECK_LIB([m])
