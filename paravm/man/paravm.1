@@ -1,0 +1,140 @@
+.TH "PARAVM" "1"
+
+.SH "NAME"
+
+paravm \- Parallella Virtual Machine
+
+.SH "SYNOPSIS"
+
+.B paravm
+[\fI--version\fR] [\fI--help\fR] [\fIOPTIONS\fR] <\fITOOL\fR> <\fIARGS\fR>
+
+.SH "DESCRIPTION"
+
+ParaVM is a virtual machine written specifically for the Epiphany processor
+achitecture. More specifically, it is meant to run on a host ARM system
+where it compiles code (in a JIT fashion) to Epiphany machine code that is
+executed on Epiphany accelerator cores in an isolated fashion similar to
+the concurreny model employed by Erlang. One such system is the Parallella
+board which ParaVM is primarily written for.
+
+.SH "OPTIONS"
+
+These are general options not associated with any particular tool.
+
+.TP
+\fB\-\-version\fR
+Print version information and exit.
+.TP
+\fB\-\-help\fR
+Print usage information and exit.
+
+.SH "TOOLS"
+
+Each tool has different command line options that can change its behavior.
+
+All tools send errors and warnings to \fIstderr\fR.
+
+.SS "paravm asm [\fIOPTIONS\fR\fB] <\fIPVA_FILE\fR\fB>"
+
+Assemble a file containing ParaVM assembly source code.
+
+.TP
+\fB\-\-out \fIPVC_FILE\fR
+Specify output file. Defaults to the input file with its extension stripped
+and \fB.pvc\fR added.
+
+.SS "paravm dis [\fIOPTIONS\fR\fB] <\fIPVC_FILE\fR\fB>"
+
+Disassemble a file containing compiled ParaVM assembly code.
+
+.TP
+\fB\-\-out \fIPVA_FILE\fR
+Specify output file. Defaults to the input file with its extension stripped
+and \fB.pva\fR added.
+
+.SS "paravm chk [\fIOPTIONS\fR\fB] <\fIPVC_FILE\fR\fB>"
+
+Verify the semantic validity of the compiled ParaVM assembly code in a file.
+
+.TP
+\fB\-\-lint\fR
+Perform lint-like checks that try to detect problems in code. These checks
+are not completely accurate and may yield false positives.
+
+.SS "paravm opt [\fIOPTIONS\fR\fB] <\fIPVC_FILE\fR\fB>"
+
+Optimize a file containing compiled ParaVM assembly code.
+
+.TP
+\fB\-\-out \fIPVC_FILE\fR
+Specify output file. Defaults to the input file (i.e. it is updated in-place).
+
+.SS "paravm exe [\fIOPTIONS\fR\fB] <\fIPVC_FILE\fR\fB>"
+
+Execute a file containing compiled ParaVM assembly code.
+
+.TP
+\fB\-\-pid \fIPID_FILE\fR
+Specify PID file. No file by default.
+.TP
+\fB\-\-emu\fR
+Execute code in the emulator. This means that the code will not be compiled
+to Epiphany machine code, nor will it be executed on accelerator cores.
+
+.SS "paravm dbg [\fIOPTIONS\fR\fB] <\fIPID_FILE\fR\fB>"
+
+Interactively debug the code being executed in a ParaVM process.
+
+.SS "paravm chg [\fIOPTIONS\fR\fB] <\fIPID_FILE\fR\fB> <\fIPVC_FILE\fR\fB>"
+
+Change the code that a ParaVM process is currently executing.
+
+.SH "FILES"
+
+.SS ".pva - Parallella Virtual Assembly"
+
+These are files containing ParaVM assembly code in source text form. They
+are typically only useful for by-hand testing of ParaVM.
+
+.SS ".pvc - Parallella Virtual Code"
+
+These are files containing compiled ParaVM assembly code. Almost all ParaVM
+tools work with this format, including the execution engine.
+
+.SS ".pid - VM Process Identifier"
+
+These are simple files containing the PID of a running ParaVM process in
+textual form. They are used to communicate with ParaVM processes to upgrade
+or downgrade the code they're running.
+
+.SH "EXAMPLES"
+
+Assemble a file:
+
+    $ paravm asm prog.pva --out prog.pvc
+
+Optimize a code file:
+
+    $ paravm opt prog.pvc
+
+Execute a program:
+
+    $ paravm exe prog.pvc --pid prog.pid
+
+Upgrade/downgrade a running program:
+
+    $ paravm chg prog.pid prog.pvc
+
+.SH "BUGS"
+
+See <\fBhttps://github.com/lycus/paravm/issues\fR> for issues.
+
+.SH "AUTHOR"
+
+See \fBAUTHORS\fR in the source distribution.
+
+.SH "COPYRIGHT"
+
+Available under the terms of the MIT License. See \fBLICENSE\fR in the
+source distribution.
