@@ -8,6 +8,7 @@ system is written with Autotools and so requires Autoconf, Automake, etc.
 The following libraries are required to build:
 
 * (e)glibc (libc, libm, libdl, libpthread)
+* GLib (libglib-2.0)
 * eSDK (libe_host)
 * ICU (libicui18n, libicuuc, libicudata)
 
