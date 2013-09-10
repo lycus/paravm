@@ -56,7 +56,7 @@ CHECK_LIB([m], [AC_MSG_FAILURE([libm is not available])])
 CHECK_LIB([pthread], [AC_MSG_FAILURE([libpthread is not available])])
 CHECK_LIB([BlocksRuntime], [AC_MSG_FAILURE([libBlocksRuntime is not available])])
 CHECK_LIB([gmp], [AC_MSG_FAILURE([libgmp is not available])])
-CHECK_LIB([e_host])
+CHECK_LIB([e_host], [ADD_CPPFLAGS([-DPARAVM_EMULATE=1])])
 
 CHECK_PKG([libglib], [glib-2.0])
 CHECK_PKG([libffi], [libffi])
