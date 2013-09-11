@@ -348,12 +348,11 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
         g_array_append_val(arr, dummy);
 
         *tokens = (ParaVMToken *)arr->data;
+        *line = lline;
+        *column = lcolumn;
     }
 
     g_array_free(arr, result != PARAVM_ERROR_OK);
-
-    *line = lline;
-    *column = lcolumn;
 
     return result;
 }
