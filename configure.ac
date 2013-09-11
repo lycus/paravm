@@ -103,7 +103,7 @@ ADD_CFLAGS([-fvisibility=hidden])
 ADD_CFLAGS([-Wall -Wextra -Werror])
 ADD_CFLAGS([-Winit-self -Wswitch-default -Wswitch-enum -Wundef -Wshadow -Wpointer-arith])
 ADD_CFLAGS([-Wcast-qual -Wwrite-strings -Wconversion -Wstrict-prototypes -Wold-style-definition])
-ADD_CFLAGS([-Wmissing-declarations -Wmissing-format-attribute -Wpadded -Wredundant-decls -Winline])
+ADD_CFLAGS([-Wmissing-declarations -Wmissing-format-attribute -Wredundant-decls -Winline])
 
 # Set feature macros as per feature_test_macros(7).
 ADD_CPPFLAGS([-D_GNU_SOURCE=1 -D_FILE_OFFSET_BITS=64 -D_REENTRANT=1])
