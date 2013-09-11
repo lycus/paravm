@@ -1,5 +1,3 @@
-ACLOCAL_AMFLAGS = -I m4
-
 SUBDIRS = paravm
 
 EXTRA_DIST = \
