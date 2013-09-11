@@ -255,6 +255,8 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
                         break;
                     }
                 }
+                else
+                    result = PARAVM_ERROR_SYNTAX;
 
                 break;
         }
