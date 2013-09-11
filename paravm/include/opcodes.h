@@ -56,7 +56,7 @@ paravm_api
 paravm_nothrow
 paravm_pure
 paravm_nonnull()
-const ParaVMOpCode *paravm_get_opcodes(void);
+const ParaVMOpCode *const *paravm_get_opcodes(void);
 
 paravm_api
 paravm_nothrow

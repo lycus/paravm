@@ -94,9 +94,9 @@ static void global_opcodes_dtor(void)
     g_hash_table_destroy(opcode_code_table);
 }
 
-const ParaVMOpCode *paravm_get_opcodes(void)
+const ParaVMOpCode *const *paravm_get_opcodes(void)
 {
-    return opcodes[0];
+    return opcodes;
 }
 
 const ParaVMOpCode *paravm_get_opcode_by_name(const char *name)
