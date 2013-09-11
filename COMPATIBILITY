@@ -13,6 +13,7 @@ The following libraries are required to build:
 * GMP (libgmp)
 * editline (libedit)
 * libffi (libffi)
+* Boehm-Demers-Weiser GC (libgc)
 
 The following libraries are required for Epiphany support:
 

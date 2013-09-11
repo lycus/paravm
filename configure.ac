@@ -61,6 +61,7 @@ CHECK_LIB([e-hal], [AC_MSG_RESULT([no (building without the JIT compiler)])
 
 CHECK_PKG([libglib], [glib-2.0])
 CHECK_PKG([libffi], [libffi])
+CHECK_PKG([libgc], [bdw-gc])
 CHECK_PKG([libedit], [libedit])
 
 AC_SUBST([DEP_LIBS])
