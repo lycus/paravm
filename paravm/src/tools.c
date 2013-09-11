@@ -26,7 +26,7 @@ int asm_tool(int argc, char *argv[])
 
     if (!g_file_get_contents(file, &source, null, &error))
     {
-        printf("Error: Could not open '%s' (%s)\n", file, error->message);
+        printf("Error: %s\n", error->message);
         return 1;
     }
 
