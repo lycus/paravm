@@ -3,11 +3,11 @@
                 -- Introduction --
 
 ParaVM is a virtual machine written specifically for the Epiphany processor
-achitecture. More specifically, it is meant to run on a host ARM system
-where it compiles code (in a JIT fashion) to Epiphany machine code that is
-executed on Epiphany accelerator cores in an isolated fashion similar to
-the concurreny model employed by Erlang. One such system is the Parallella
-board which ParaVM is primarily written for.
+achitecture. More specifically, it is meant to run on a 'regular' host CPU
+(such as x86 or ARM) where it compiles code (in a JIT fashion) to Epiphany
+machine code that is executed on Epiphany accelerator cores in an isolated
+way similar to the concurreny model employed by Erlang. One such system is
+the Parallella board which ParaVM is primarily written for.
 
 For further information, see:
 
