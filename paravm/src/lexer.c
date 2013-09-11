@@ -85,7 +85,8 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
         uint32_t tline = *line;
         uint32_t tcol = *column;
 
-        g_array_append_val(str_arr, c);
+        if (c != CHAR_APOSTROPHE && c != CHAR_QUOTE)
+            g_array_append_val(str_arr, c);
 
         switch (c)
         {
@@ -120,10 +121,12 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
                         break;
                     }
 
-                    c = next_char();
-                    g_array_append_val(str_arr, c);
-
-                    if (c == term)
+                    if (c != term)
+                    {
+                        c = next_char();
+                        g_array_append_val(str_arr, c);
+                    }
+                    else
                         break;
                 }
 
