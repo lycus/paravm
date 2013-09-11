@@ -4,6 +4,7 @@
 #include <glib-2.0/glib.h>
 
 #include "lexer.h"
+#include "opcodes.h"
 
 #define CHAR_LINE_FEED 0x0000000A
 #define CHAR_SLASH 0x0000002F
@@ -316,7 +317,8 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
             }
             else if (is_opcode)
             {
-                /* TODO Check opcode against table. */
+                if (!paravm_get_opcode_by_name(ustr))
+                    result = PARAVM_ERROR_SYNTAX;
             }
 
             // Double-check since the result may have changed due to
