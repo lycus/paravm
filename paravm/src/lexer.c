@@ -79,7 +79,7 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
         if (g_unichar_isspace(c))
             continue;
 
-        bool is_instruction = false;
+        bool is_opcode = false;
         bool is_directive = false;
 
         ParaVMTokenType tt;
@@ -197,8 +197,8 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
             default:
                 if (g_unichar_isalpha(c))
                 {
-                    is_instruction = true;
-                    tt = PARAVM_TOKEN_TYPE_INSTRUCTION;
+                    is_opcode = true;
+                    tt = PARAVM_TOKEN_TYPE_OPCODE;
 
                     while (true)
                     {
@@ -314,21 +314,13 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
                 else
                     result = PARAVM_ERROR_SYNTAX;
             }
-            else if (is_instruction)
+            else if (is_opcode)
             {
-                // It might be a true/false literal.
-                if (!strcmp(ustr, "true"))
-                    tt = PARAVM_TOKEN_TYPE_TRUE;
-                else if (!strcmp(ustr, "false"))
-                    tt = PARAVM_TOKEN_TYPE_FALSE;
-                else
-                {
-                    /* TODO Check instruction against table. */
-                }
+                /* TODO Check opcode against table. */
             }
 
             // Double-check since the result may have changed due to
-            // the directive and instruction checks above.
+            // the directive and opcode checks above.
             if (result == PARAVM_ERROR_OK)
             {
                 ParaVMToken tok = (ParaVMToken) { tt, ustr, tline, tcol };
