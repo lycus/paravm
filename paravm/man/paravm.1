@@ -75,6 +75,10 @@ Specify output file. Defaults to the input file (i.e. it is updated in-place).
 Execute a file containing compiled ParaVM assembly code.
 
 .TP
+\fB\-\-hdf \fIHDF_FILE\fR
+Specify hardware description file. No file by default; the path is assumed to
+be specified in the `EPIPHANY_HDF` environment variable).
+.TP
 \fB\-\-pid \fIPID_FILE\fR
 Specify PID file. No file by default.
 .TP
@@ -102,11 +106,24 @@ are typically only useful for by-hand testing of ParaVM.
 These are files containing compiled ParaVM assembly code. Almost all ParaVM
 tools work with this format, including the execution engine.
 
+.SS ".hdf - Hardware Description File"
+
+These are XML files containing various information about the Epiphany mesh.
+ParaVM uses these to determine what cores can be allocated.
+
 .SS ".pid - VM Process Identifier"
 
 These are simple files containing the PID of a running ParaVM process in
 textual form. They are used to communicate with ParaVM processes to upgrade
 or downgrade the code they're running.
+
+.SH "ENVIRONMENT VARIABLES"
+
+.SS "EPIPHANY_HDF"
+
+ParaVM looks at this environment variable to find the path to a hardware
+description file to use for the Epiphany mesh. This is only used when no
+explicit file has been specified.
 
 .SH "EXAMPLES"
 

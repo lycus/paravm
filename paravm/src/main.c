@@ -4,19 +4,21 @@
 
 #include "internal/tools.h"
 
-int version;
-int help;
-int lint;
-int emu;
-const char *out;
-const char *pid;
+int opt_version;
+int opt_help;
+int opt_lint;
+int opt_emu;
+const char *opt_hdf;
+const char *opt_out;
+const char *opt_pid;
 
 static const struct option options[] =
 {
-    { "help", no_argument, &help, true },
-    { "version", no_argument, &version, true },
-    { "lint", no_argument, &lint, true },
-    { "emu", no_argument, &emu, true },
+    { "help", no_argument, &opt_help, true },
+    { "version", no_argument, &opt_version, true },
+    { "lint", no_argument, &opt_lint, true },
+    { "emu", no_argument, &opt_emu, true },
+    { "hdf", required_argument, null, 'h' },
     { "out", required_argument, null, 'o' },
     { "pid", required_argument, null, 'p' },
     { null, 0, null, 0 },
@@ -43,11 +45,14 @@ int main(int argc, char *argv[])
 
         switch (c)
         {
+            case 'h':
+                opt_hdf = optarg;
+                break;
             case 'o':
-                out = optarg;
+                opt_out = optarg;
                 break;
             case 'p':
-                pid = optarg;
+                opt_pid = optarg;
                 break;
             case ':':
             case '?':
@@ -56,20 +61,20 @@ int main(int argc, char *argv[])
         }
     }
 
-    if (version)
+    if (opt_version)
     {
         printf("ParaVM - " PACKAGE_VERSION "\n");
         printf("Copyright (C) 2013 The Lycus Foundation\n");
         printf("Available under the terms of the MIT License\n");
     }
 
-    if (help)
+    if (opt_help)
     {
         usage(argv[0]);
         printf("Please refer to `man 1 paravm`\n");
     }
 
-    if (version || help)
+    if (opt_version || opt_help)
         return 0;
 
     // Skip past all the options so we only have non-option arguments.
