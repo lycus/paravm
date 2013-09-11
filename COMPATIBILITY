@@ -16,7 +16,7 @@ The following libraries are required to build:
 
 The following libraries are required for Epiphany support:
 
-* eSDK (libe_host)
+* eSDK (libe-hal)
 
 If the eSDK is not present, ParaVM will be compiled in emulation mode, in
 which case only the emulator is available. If you need JIT compiler support,
