@@ -106,10 +106,7 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
 
                 break;
             case CHAR_APOSTROPHE:
-            case CHAR_QUOTE:
-                tt = PARAVM_TOKEN_TYPE_STRING;
-
-                uint32_t term = c;
+                tt = PARAVM_TOKEN_TYPE_ATOM;
 
                 while (true)
                 {
@@ -121,7 +118,30 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
                         break;
                     }
 
-                    if (c != term)
+                    if (c != CHAR_APOSTROPHE)
+                    {
+                        c = next_char();
+                        g_array_append_val(str_arr, c);
+                    }
+                    else
+                        break;
+                }
+
+                break;
+            case CHAR_QUOTE:
+                tt = PARAVM_TOKEN_TYPE_STRING;
+
+                while (true)
+                {
+                    c = peek_char();
+
+                    if (c == UINT32_MAX)
+                    {
+                        result = PARAVM_ERROR_SYNTAX;
+                        break;
+                    }
+
+                    if (c != CHAR_QUOTE)
                     {
                         c = next_char();
                         g_array_append_val(str_arr, c);
