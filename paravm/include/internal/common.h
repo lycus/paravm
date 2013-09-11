@@ -9,7 +9,6 @@
 #define var_used paravm_attr(used)
 #define var_unused paravm_attr(unused)
 #define naked_func paravm_attr(naked)
-#define with_dtor(F) paravm_attr(cleanup(F))
 
 #define null ((void *)0)
 

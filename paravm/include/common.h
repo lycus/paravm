@@ -10,7 +10,6 @@
 #define paravm_api paravm_attr(visibility("default"))
 #define paravm_deprecated(MSG) paravm_attr(deprecated(MSG))
 #define paravm_nonnull(...) paravm_attr(nonnull(__VA_ARGS__))
-#define paravm_nodiscard paravm_attr(warn_unused_result)
 #define paravm_nothrow paravm_attr(nothrow)
 
 #define paravm_hot paravm_attr(hot)
