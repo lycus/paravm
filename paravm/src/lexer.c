@@ -1,4 +1,5 @@
 #include <string.h>
+#include <stdio.h>
 
 #include <glib-2.0/glib.h>
 
@@ -6,6 +7,7 @@
 
 #define CHAR_LINE_FEED 0x0000000A
 #define CHAR_SLASH 0x0000002F
+#define CHAR_BACKSLASH 0x0000005C
 #define CHAR_APOSTROPHE 0x00000027
 #define CHAR_QUOTE 0x00000022
 #define CHAR_PAREN_OPEN 0x00000028
@@ -30,7 +32,7 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
     __block const char *lstr = str;
 
     *tokens = null;
-    *line = 0;
+    *line = 1;
     *column = 0;
 
     if (!g_utf8_validate(lstr, -1, null))
@@ -44,8 +46,8 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
         return g_utf8_get_char(lstr);
     };
 
-    __block uint32_t lline;
-    __block uint32_t lcolumn;
+    __block uint32_t lline = 1;
+    __block uint32_t lcolumn = 0;
 
     uint32_t (^ next_char)(void) = ^(void)
     {
@@ -82,8 +84,8 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
 
         ParaVMTokenType tt;
         GArray *str_arr = g_array_new(false, false, sizeof(uint32_t));
-        uint32_t tline = *line;
-        uint32_t tcol = *column;
+        uint32_t tline = lline;
+        uint32_t tcol = lcolumn;
 
         if (c != CHAR_APOSTROPHE && c != CHAR_QUOTE)
             g_array_append_val(str_arr, c);
@@ -106,30 +108,10 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
 
                 break;
             case CHAR_APOSTROPHE:
-                tt = PARAVM_TOKEN_TYPE_ATOM;
-
-                while (true)
-                {
-                    c = peek_char();
-
-                    if (c == UINT32_MAX)
-                    {
-                        result = PARAVM_ERROR_SYNTAX;
-                        break;
-                    }
-
-                    if (c != CHAR_APOSTROPHE)
-                    {
-                        c = next_char();
-                        g_array_append_val(str_arr, c);
-                    }
-                    else
-                        break;
-                }
-
-                break;
             case CHAR_QUOTE:
-                tt = PARAVM_TOKEN_TYPE_STRING;
+                tt = c == CHAR_APOSTROPHE ? PARAVM_TOKEN_TYPE_ATOM : PARAVM_TOKEN_TYPE_STRING;
+
+                uint32_t term = c;
 
                 while (true)
                 {
@@ -141,13 +123,37 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
                         break;
                     }
 
-                    if (c != CHAR_QUOTE)
+                    // Handle escape sequences.
+                    if (c == CHAR_BACKSLASH)
+                    {
+                        c = next_char();
+
+                        uint32_t c2 = peek_char();
+
+                        switch (c2)
+                        {
+                            case CHAR_BACKSLASH:
+                            case CHAR_APOSTROPHE:
+                            case CHAR_QUOTE:
+                                // Drop c, and only save c2.
+                                c2 = next_char();
+                                g_array_append_val(str_arr, c2);
+                                break;
+                            default:
+                                g_array_append_val(str_arr, c);
+                                break;
+                        }
+                    }
+                    else if (c != term)
                     {
                         c = next_char();
                         g_array_append_val(str_arr, c);
                     }
                     else
+                    {
+                        next_char(); // Drop terminator character.
                         break;
+                    }
                 }
 
                 break;
