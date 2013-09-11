@@ -6,7 +6,8 @@ lib_LTLIBRARIES = libparavm.la
 
 libparavm_la_SOURCES = \
 	src/common.c \
-	src/lexer.c
+	src/lexer.c \
+	src/opcodes.c
 
 libparavm_la_LIBADD = @DEP_LIBS@ @DEP_PKG_LIBS@
 libparavm_la_CFLAGS = @DEP_PKG_CFLAGS@
@@ -17,7 +18,8 @@ libparavmincludedir = $(includedir)/paravm
 libparavminclude_HEADERS = \
 	include/common.h \
 	include/error.h \
-	include/lexer.h
+	include/lexer.h \
+	include/opcodes.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = paravm.pc

@@ -10,7 +10,7 @@
 #define var_unused paravm_attr(unused)
 #define naked_func paravm_attr(naked)
 #define global_ctor paravm_attr(constructor)
-#define global dtor paravm_attr(destructor)
+#define global_dtor paravm_attr(destructor)
 
 #define null ((void *)0)
 
