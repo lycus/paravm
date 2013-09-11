@@ -310,7 +310,13 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken **tokens,
         g_array_free(str_arr, true);
 
         if (result != PARAVM_ERROR_OK)
+        {
+            // Try to give the actual location of the error.
+            *line = tline;
+            *column = tcol;
+
             break;
+        }
     }
 
     if (result == PARAVM_ERROR_OK)
