@@ -99,8 +99,8 @@ ADD_CFLAGS([-fwrapv -fno-omit-frame-pointer -fexceptions -fno-strict-aliasing -f
 ADD_CFLAGS([-fvisibility=hidden])
 
 ADD_CFLAGS([-Wall -Wextra -Werror])
-ADD_CFLAGS([-Winit-self -Wswitch-default -Wswitch-enum -Wundef -Wshadow -Wpointer-arith])
-ADD_CFLAGS([-Wcast-qual -Wwrite-strings -Wconversion -Wstrict-prototypes -Wold-style-definition])
+ADD_CFLAGS([-Winit-self -Wswitch-default -Wundef -Wshadow -Wpointer-arith -Wcast-qual])
+ADD_CFLAGS([-Wwrite-strings -Wconversion -Wstrict-prototypes -Wold-style-definition])
 ADD_CFLAGS([-Wmissing-declarations -Wmissing-format-attribute -Wredundant-decls -Winline])
 
 # Set feature macros as per feature_test_macros(7).
