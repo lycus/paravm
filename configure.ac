@@ -80,6 +80,17 @@ AS_IF(
     [ADD_CFLAGS([-O3])])
 
 AC_ARG_ENABLE(
+    [analyze],
+    [AS_HELP_STRING([--enable-analyze], [enable static analyzer [default=no]])],
+    [],
+    [enable_analyze=no])
+
+AS_IF(
+    [test "x$enable_analyze" != "xno"],
+    [ADD_CFLAGS([--analyze])],
+    [])
+
+AC_ARG_ENABLE(
     [sanitize],
     [AS_HELP_STRING([--enable-sanitize=ARG], [enable a sanitizer [default=no]])],
     [AS_IF([test "x$enable_sanitize" = "xyes"],
