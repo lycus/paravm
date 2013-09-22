@@ -40,3 +40,7 @@ paravm_SOURCES = \
 paravm_LDADD = libparavm.la
 
 dist_man_MANS = man/paravm.1
+
+EXTRA_DIST = \
+	vim/ftdetect/pva.vim \
+	vim/syntax/pva.vim
