@@ -10,4 +10,4 @@ URL: @PACKAGE_URL@
 Requires: @DEP_PKG_NAMES@
 Libs: -L${libdir} -lparavm
 Libs.private: @DEP_LIBS@
-Cflags: -I${includedir}/paravm
+Cflags: -I${includedir}
