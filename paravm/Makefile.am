@@ -5,6 +5,10 @@ AM_CPPFLAGS = -I $(srcdir)/include
 lib_LTLIBRARIES = libparavm.la
 
 libparavm_la_SOURCES = \
+	include/internal/atomic.h \
+	include/internal/common.h \
+	include/internal/options.h \
+	include/internal/tools.h \
 	src/common.c \
 	src/lexer.c \
 	src/opcodes.c
