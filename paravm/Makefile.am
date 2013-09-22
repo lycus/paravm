@@ -30,14 +30,12 @@ pkgconfig_DATA = paravm.pc
 
 bin_PROGRAMS = paravm
 
-paravm_LDADD = @DEP_LIBS@ @DEP_PKG_LIBS@
-paravm_CFLAGS = @DEP_PKG_CFLAGS@
-
 paravm_SOURCES = \
 	src/main.c \
 	src/tools.c
 
-paravm_LDADD = libparavm.la
+paravm_LDADD = @DEP_LIBS@ @DEP_PKG_LIBS@ libparavm.la
+paravm_CFLAGS = @DEP_PKG_CFLAGS@
 
 dist_man_MANS = man/paravm.1
 
