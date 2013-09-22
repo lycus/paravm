@@ -11,7 +11,7 @@ libparavm_la_SOURCES = \
 
 libparavm_la_LIBADD = @DEP_LIBS@ @DEP_PKG_LIBS@
 libparavm_la_CFLAGS = @DEP_PKG_CFLAGS@
-libparavm_la_LDFLAGS = -export-symbols-regex '^paravm_'
+libparavm_la_LDFLAGS = -export-symbols-regex "^paravm_"
 
 libparavmincludedir = $(includedir)/paravm
 
