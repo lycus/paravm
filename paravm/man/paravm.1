@@ -70,6 +70,15 @@ Optimize a file containing compiled ParaVM assembly code.
 \fB\-\-out \fIPVC_FILE\fR
 Specify output file. Defaults to the input file (i.e. it is updated in-place).
 
+.SS "paravm sup [\fIOPTIONS\fR\fB] <\fIPVC_FILE\fR\fB>"
+
+Optimize a file containing compiled ParaVM assembly code by executing it with
+the supercompiler.
+
+.TP
+\fB\-\-out \fIPVC_FILE\fR
+Specify output file. Defaults to the input file (i.e. it is updated in-place).
+
 .SS "paravm exe [\fIOPTIONS\fR\fB] <\fIPVC_FILE\fR\fB>"
 
 Execute a file containing compiled ParaVM assembly code.
@@ -138,6 +147,10 @@ Assemble a file:
 Optimize a code file:
 
     $ paravm opt prog.pvc
+
+Supercompile a code file:
+
+    $ paravm sup prog.pvc
 
 Execute a program:
 
