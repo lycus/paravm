@@ -26,6 +26,7 @@
 *.pc
 *.out
 *.pvc
+*.gz
 
 .dirstamp
 Makefile
