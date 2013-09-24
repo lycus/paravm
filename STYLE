@@ -31,8 +31,9 @@ related. This helps a lot when skimming code.
 
 We roughly follow the conventions used in most C code:
 
-    * Structures, unions, and most macros are PascalCase.
+    * Structures, unions, and enumerations are PascalCase.
     * Functions, variables, and parameters are snake_case.
+    * Most macros are UPPER_CASE.
 
 You should have a VERY good reason if you're going to deviate from these
 naming rules. We want to keep ParaVM's interfaces consistent with most
