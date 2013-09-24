@@ -10,6 +10,7 @@ libparavm_la_SOURCES = \
 	include/internal/options.h \
 	include/internal/tools.h \
 	src/common.c \
+	src/error.c \
 	src/lexer.c \
 	src/opcodes.c
 
