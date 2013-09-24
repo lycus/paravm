@@ -37,7 +37,7 @@ paravm_SOURCES = \
 paravm_LDADD = @DEP_LIBS@ @DEP_PKG_LIBS@ libparavm.la
 paravm_CFLAGS = @DEP_PKG_CFLAGS@
 
-dist_man_MANS = man/paravm.1
+man_MANS = man/paravm.1
 
 EXTRA_DIST = \
 	vim/ftdetect/pva.vim \

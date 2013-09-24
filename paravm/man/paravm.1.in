@@ -62,14 +62,6 @@ Verify the semantic validity of the compiled ParaVM assembly code in a file.
 Perform lint-like checks that try to detect problems in code. These checks
 are not completely accurate and may yield false positives.
 
-.SS "paravm opt [\fIOPTIONS\fR\fB] <\fIPVC_FILE\fR\fB>"
-
-Optimize a file containing compiled ParaVM assembly code.
-
-.TP
-\fB\-\-out \fIPVC_FILE\fR
-Specify output file. Defaults to the input file (i.e. it is updated in-place).
-
 .SS "paravm sup [\fIOPTIONS\fR\fB] <\fIPVC_FILE\fR\fB>"
 
 Optimize a file containing compiled ParaVM assembly code by executing it with
@@ -132,6 +124,13 @@ or downgrade the code they're running.
 
 This section describes various environment variables that affect ParaVM.
 
+.SS "PARAVM_LIBS"
+
+ParaVM looks at this colon-separated list of paths to find directories
+where it should search for modules ending in \fB.pvc\fR. Before looking
+in these directories, ParaVM looks in \fB@libdir@/paravm\fR and the
+current working directory.
+
 .SS "EPIPHANY_HDF"
 
 ParaVM looks at this environment variable to find the path to a hardware
@@ -143,10 +142,6 @@ explicit file has been specified.
 Assemble a file:
 
     $ paravm asm prog.pva --out prog.pvc
-
-Optimize a code file:
-
-    $ paravm opt prog.pvc
 
 Supercompile a code file:
 

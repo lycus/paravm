@@ -36,3 +36,4 @@ Makefile.in
 .libs
 
 /paravm/paravm
+/paravm/man/paravm.1
