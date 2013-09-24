@@ -26,7 +26,7 @@ libparavminclude_HEADERS = \
 	include/opcodes.h
 
 pkgconfigdir = $(libdir)/pkgconfig
-pkgconfig_DATA = paravm.pc
+pkgconfig_DATA = pc/paravm.pc
 
 bin_PROGRAMS = paravm
 

@@ -117,7 +117,8 @@ ADD_CFLAGS([-Wmissing-declarations -Wmissing-format-attribute -Wredundant-decls 
 # Set feature macros as per feature_test_macros(7).
 ADD_CPPFLAGS([-D_GNU_SOURCE=1 -D_FILE_OFFSET_BITS=64 -D_REENTRANT=1])
 
-AC_CONFIG_FILES([Makefile paravm/Makefile paravm/tests/Makefile paravm/paravm.pc:paravm/paravm.pc.in])
+AC_CONFIG_FILES([Makefile paravm/Makefile paravm/tests/Makefile])
+AC_CONFIG_FILES([paravm/pc/paravm.pc:paravm/pc/paravm.pc.in])
 AC_CONFIG_FILES([paravm/man/paravm.1:paravm/man/paravm.1.in])
 
 # We need to add this after the prelude has been generated.
