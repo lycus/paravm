@@ -103,7 +103,7 @@ AS_IF(
     [ADD_CFLAGS([-fsanitize=$enable_sanitize])],
     [])
 
-ADD_CFLAGS([-std=gnu11 -pthread -fms-extensions -fborland-extensions -fblocks])
+ADD_CFLAGS([-std=gnu11 -pthread -fblocks])
 ADD_CFLAGS([-fwrapv -fno-omit-frame-pointer -fexceptions -fno-strict-aliasing -funsigned-char])
 
 # Ensure that only symbols we mark are exported.
