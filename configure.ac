@@ -56,7 +56,7 @@ CHECK_LIB([pthread], [AC_MSG_FAILURE([libpthread is not available])])
 CHECK_LIB([BlocksRuntime], [AC_MSG_FAILURE([libBlocksRuntime is not available])])
 CHECK_LIB([gmp], [AC_MSG_FAILURE([libgmp is not available])])
 CHECK_LIB([e-hal], [AC_MSG_RESULT([no (building without the JIT compiler)])
-                    ADD_CPPFLAGS([-DPARAVM_EMULATE=1])])
+                    AC_DEFINE([PARAVM_EMULATE], [1], [Define to 1 if libe-hal is not available.])])
 
 CHECK_PKG([libglib], [glib-2.0])
 CHECK_PKG([libffi], [libffi])
@@ -77,7 +77,8 @@ AC_ARG_ENABLE(
 AS_IF(
     [test "x$enable_debug" != "xno"],
     [ADD_CFLAGS([-ggdb -O0 -fstack-protector-all])
-     ADD_CPPFLAGS([-DPARAVM_DEBUG=1 -D_FORTIFY_SOURCE=2])],
+     ADD_CPPFLAGS([-D_FORTIFY_SOURCE=2])
+     AC_DEFINE([PARAVM_DEBUG], [1], [Define to 1 to build in debug mode.])],
     [ADD_CFLAGS([-O3])])
 
 AC_ARG_ENABLE(
