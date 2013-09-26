@@ -2,7 +2,7 @@
 
 .SH "NAME"
 
-paravm \- Parallella Virtual Machine
+paravm - Parallella Virtual Machine
 
 .SH "SYNOPSIS"
 
@@ -23,10 +23,10 @@ the Parallella board which ParaVM is primarily written for.
 These are general options not associated with any particular tool.
 
 .TP
-\fB\-\-version\fR
+\fB--version\fR
 Print version information and exit.
 .TP
-\fB\-\-help\fR
+\fB--help\fR
 Print usage information and exit.
 
 .SH "TOOLS"
@@ -40,7 +40,7 @@ All tools send errors and warnings to \fIstderr\fR.
 Assemble a file containing ParaVM assembly source code.
 
 .TP
-\fB\-\-out \fIPVC_FILE\fR
+\fB--out \fIPVC_FILE\fR
 Specify output file. Defaults to the input file with its extension stripped
 and \fB.pvc\fR added.
 
@@ -49,7 +49,7 @@ and \fB.pvc\fR added.
 Disassemble a file containing compiled ParaVM assembly code.
 
 .TP
-\fB\-\-out \fIPVA_FILE\fR
+\fB--out \fIPVA_FILE\fR
 Specify output file. Defaults to the input file with its extension stripped
 and \fB.pva\fR added.
 
@@ -57,33 +57,23 @@ and \fB.pva\fR added.
 
 Verify the semantic validity of the compiled ParaVM assembly code in a file.
 
-.TP
-\fB\-\-lint\fR
-Perform lint-like checks that try to detect problems in code. These checks
-are not completely accurate and may yield false positives.
+.SS "paravm exe [\fIOPTIONS\fR\fB] <\fIPVC_FILE\fR\fB> [\fIARGS\fR\fB]"
 
-.SS "paravm sup [\fIOPTIONS\fR\fB] <\fIPVC_FILE\fR\fB>"
-
-Optimize a file containing compiled ParaVM assembly code by executing it with
-the supercompiler.
+Execute a file containing compiled ParaVM assembly code by running its entry
+point function. That function is, by default, \fBmain\fR.
 
 .TP
-\fB\-\-out \fIPVC_FILE\fR
-Specify output file. Defaults to the input file (i.e. it is updated in-place).
-
-.SS "paravm exe [\fIOPTIONS\fR\fB] <\fIPVC_FILE\fR\fB>"
-
-Execute a file containing compiled ParaVM assembly code.
-
+\fB--entry \fIENTRY_FUN\fR
+Specify the entry point function explicitly.
 .TP
-\fB\-\-hdf \fIHDF_FILE\fR
+\fB--hdf \fIHDF_FILE\fR
 Specify hardware description file. No file by default; the path is assumed to
 be specified in the `EPIPHANY_HDF` environment variable).
 .TP
-\fB\-\-pid \fIPID_FILE\fR
+\fB--pid \fIPID_FILE\fR
 Specify PID file. No file by default.
 .TP
-\fB\-\-emu\fR
+\fB--emu\fR
 Execute code in the emulator. This means that the code will not be compiled
 to Epiphany machine code, nor will it be executed on accelerator cores.
 
@@ -141,19 +131,27 @@ explicit file has been specified.
 
 Assemble a file:
 
-    $ paravm asm prog.pva --out prog.pvc
+    $ paravm asm code.pva --out main.pvc
 
-Supercompile a code file:
+Verify a compiled file:
 
-    $ paravm sup prog.pvc
+    $ paravm chk main.pvc
 
-Execute a program:
+Disassemble a compiled file:
 
-    $ paravm exe prog.pvc --pid prog.pid
+    $ paravm dis main.pvc --out dump.pva
+
+Execute a compiled file:
+
+    $ paravm exe main.pvc --pid vm.pid
 
 Upgrade/downgrade a running program:
 
-    $ paravm chg prog.pid prog.pvc
+    $ paravm chg vm.pid main.pvc
+
+Debug a program interactively:
+
+    $ paravm dbg vm.pid
 
 .SH "BUGS"
 
