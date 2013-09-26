@@ -1,6 +1,6 @@
 SUBDIRS = tests
 
-AM_CPPFLAGS = -I $(srcdir)/include
+AM_CPPFLAGS = -I$(srcdir)/include
 
 lib_LTLIBRARIES = libparavm.la
 
