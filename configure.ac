@@ -95,7 +95,7 @@ AS_IF(
     [])
 
 ADD_CFLAGS([-std=gnu11 -pthread -fblocks])
-ADD_CFLAGS([-fwrapv -fno-omit-frame-pointer -fexceptions -fno-strict-aliasing -funsigned-char])
+ADD_CFLAGS([-fwrapv -fno-omit-frame-pointer -fexceptions -fno-strict-aliasing])
 
 # Ensure that only symbols we mark are exported.
 ADD_CFLAGS([-fvisibility=hidden])
