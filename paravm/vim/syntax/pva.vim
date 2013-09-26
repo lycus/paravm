@@ -7,10 +7,10 @@ if exists("b:current_syntax")
     finish
 endif
 
-syn match   pvaDirective                "\.\(glb\|fun\|arg\|reg\|blk\)"
-syn keyword pvaInstruction              call ret ldi ldf lda lds ldb mov add sub mul div rem
-syn keyword pvaInstruction              neg and or xor not shl shr stg ldg jmp jmpc clt cgt
-syn keyword pvaInstruction              cne ceq cge cle
+syn match   pvaDirective                "\.\(fun\|arg\|reg\|blk\)"
+syn keyword pvaInstruction              app ret ldi ldf lda lds ldb mov add sub mul div rem
+syn keyword pvaInstruction              pow neg and or xor not shl shr br brc clt cgt cne
+syn keyword pvaInstruction              ceq cge cle upc eht ehc ehr
 
 syn keyword pvaTodo                     contained TODO FIXME HACK UNDONE XXX NOTE
 syn match   pvaComment                  ";.*$" contains=pvaTodo
