@@ -3,6 +3,7 @@ AC_CANONICAL_HOST()
 
 # Get rid of the default -g -O2 added by AC_PROG_CC.
 CFLAGS="$CFLAGS"
+
 AC_PROG_CC([clang cc])
 AC_CONFIG_HEADERS([config.h prelude.h])
 
@@ -78,17 +79,6 @@ AS_IF(
     [ADD_CFLAGS([-ggdb -O0 -fstack-protector-all])
      ADD_CPPFLAGS([-DPARAVM_DEBUG=1 -D_FORTIFY_SOURCE=2])],
     [ADD_CFLAGS([-O3])])
-
-AC_ARG_ENABLE(
-    [analyze],
-    [AS_HELP_STRING([--enable-analyze], [enable static analyzer [default=no]])],
-    [],
-    [enable_analyze=no])
-
-AS_IF(
-    [test "x$enable_analyze" != "xno"],
-    [ADD_CFLAGS([--analyze])],
-    [])
 
 AC_ARG_ENABLE(
     [sanitize],

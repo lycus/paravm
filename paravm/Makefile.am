@@ -44,3 +44,14 @@ man_MANS = man/paravm.1
 EXTRA_DIST = \
 	vim/ftdetect/pva.vim \
 	vim/syntax/pva.vim
+
+analyze_srcs = $(filter %.c, $(libparavm_la_SOURCES) $(paravm_SOURCES))
+analyze_plists = $(analyze_srcs:%.c=%.plist)
+
+MOSTLYCLEANFILES = $(analyze_plists)
+
+all-local: $(analyze_plists)
+
+$(analyze_plists): %.plist: %.c
+	@echo "  CCSA  " $@
+	@$(COMPILE) @DEP_PKG_CFLAGS@ --analyze $< -o $@
