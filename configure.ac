@@ -11,11 +11,11 @@ AC_MSG_CHECKING([whether the C compiler is Clang 3.3+])
 AC_TRY_COMPILE(
     [],
     [#ifndef __clang__
-     #    Unsupported C compiler.
+     #    error "Unsupported C compiler."
      #endif
 
      #if __clang_major__ < 3 || (__clang_major__ == 3 && __clang_minor__ < 3)
-     #    Unsupported Clang version.
+     #    error "Unsupported Clang version."
      #endif],
     [AC_MSG_RESULT([yes])],
     [AC_MSG_FAILURE([the C compiler is not Clang 3.3+])])
