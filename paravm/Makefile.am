@@ -37,6 +37,7 @@ paravm_SOURCES = \
 
 paravm_LDADD = @DEP_LIBS@ @DEP_PKG_LIBS@ libparavm.la
 paravm_CFLAGS = @DEP_PKG_CFLAGS@
+paravm_LDFLAGS = -export-dynamic
 
 man_MANS = man/paravm.1
 
