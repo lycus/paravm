@@ -1,0 +1,52 @@
+.main
+{
+    margin-top: 30px;
+}
+
+.subtitle
+{
+    color: #C6C6C6;
+}
+
+a
+{
+    color: #93BD20;
+}
+
+a:hover
+{
+    color: #659E10;
+}
+
+body, p
+{
+    font-family: "PT Sans", sans-serif;
+}
+
+.flavor
+{
+    text-align: center;
+    margin-top: 25px;
+}
+
+.container
+{
+    width: 1000px;
+}
+
+.span9
+{
+    margin-left: 25%;
+    margin-right: 25%;
+    width: 50%;
+}
+
+.span10
+{
+    width: 100%;
+}
+
+.page-header
+{
+    text-align: center;
+}
