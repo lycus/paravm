@@ -49,5 +49,18 @@ body, p
 
 .page-header
 {
+    border-bottom: none;
+    box-shadow: none;
     text-align: center;
+}
+
+.news-header
+{
+    margin: 20px 0 20px;
+    text-align: center;
+}
+
+footer
+{
+    margin-top: 50px;
 }
