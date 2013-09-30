@@ -5,8 +5,6 @@ lib_LTLIBRARIES = libparavm.la
 libparavm_la_SOURCES = \
 	include/internal/atomic.h \
 	include/internal/common.h \
-	include/internal/options.h \
-	include/internal/tools.h \
 	src/common.c \
 	src/error.c \
 	src/lexer.c \
@@ -30,6 +28,8 @@ pkgconfig_DATA = pc/paravm.pc
 bin_PROGRAMS = paravm
 
 paravm_SOURCES = \
+	include/internal/options.h \
+	include/internal/tools.h \
 	src/main.c \
 	src/tools.c
 
