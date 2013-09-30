@@ -5,6 +5,7 @@ lib_LTLIBRARIES = libparavm.la
 libparavm_la_SOURCES = \
 	include/internal/atomic.h \
 	include/internal/common.h \
+	src/assemble.c \
 	src/common.c \
 	src/error.c \
 	src/ir.c \
@@ -18,6 +19,7 @@ libparavm_la_LDFLAGS = -export-symbols-regex "^paravm_"
 libparavmincludedir = $(includedir)/paravm
 
 libparavminclude_HEADERS = \
+	include/assemble.h \
 	include/common.h \
 	include/error.h \
 	include/ir.h \
