@@ -36,6 +36,8 @@ libparavminclude_HEADERS = \
 	include/opcode.h \
 	include/verify.h
 
+libparavminclude_DATA = map/module.map
+
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = pc/paravm.pc
 

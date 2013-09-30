@@ -1,0 +1,80 @@
+module @PACKAGE_NAME@
+{
+    requires c11
+             blocks
+             gnu_keywords
+             gnu_mode
+             hosted
+             line_comments
+             posix_threads
+             tls
+             wrapv
+
+    link "@PACKAGE_NAME@"
+
+    module assemble
+    {
+        header "assemble.h"
+        export *
+    }
+
+    module atom
+    {
+        header "atom.h"
+        export *
+    }
+
+    module common
+    {
+        header "common.h"
+        export *
+    }
+
+    module context
+    {
+        header "context.h"
+        export *
+    }
+
+    module disassemble
+    {
+        header "disassemble.h"
+        export *
+    }
+
+    module error
+    {
+        header "error.h"
+        export *
+    }
+
+    module io
+    {
+        header "io.h"
+        export *
+    }
+
+    module ir
+    {
+        header "ir.h"
+        export *
+    }
+
+    module lex
+    {
+        header "lex.h"
+        export *
+    }
+
+    module opcode
+    {
+        header "opcode.h"
+        export *
+    }
+
+    module verify
+    {
+        header "verify.h"
+        export *
+    }
+}

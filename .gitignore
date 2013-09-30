@@ -23,6 +23,7 @@
 *.lo
 *.log
 *.o
+*.map
 *.pc
 *.plist
 *.out
