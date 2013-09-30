@@ -7,8 +7,8 @@
 
 int opt_version;
 int opt_help;
-int opt_lint;
 int opt_emu;
+const char *opt_entry;
 const char *opt_hdf;
 const char *opt_out;
 const char *opt_pid;
@@ -17,8 +17,8 @@ static const struct option options[] =
 {
     { "help", no_argument, &opt_help, true },
     { "version", no_argument, &opt_version, true },
-    { "lint", no_argument, &opt_lint, true },
     { "emu", no_argument, &opt_emu, true },
+    { "entry", required_argument, null, 'e' },
     { "hdf", required_argument, null, 'h' },
     { "out", required_argument, null, 'o' },
     { "pid", required_argument, null, 'p' },
@@ -50,6 +50,9 @@ int main(int argc, char *argv[])
 
         switch (c)
         {
+            case 'e':
+                opt_entry = optarg;
+                break;
             case 'h':
                 opt_hdf = optarg;
                 break;
