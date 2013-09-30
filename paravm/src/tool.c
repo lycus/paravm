@@ -3,8 +3,8 @@
 #include <glib.h>
 #include <glib/gprintf.h>
 
-#include "internal/options.h"
-#include "internal/tools.h"
+#include "internal/option.h"
+#include "internal/tool.h"
 
 #include "assemble.h"
 #include "disassemble.h"

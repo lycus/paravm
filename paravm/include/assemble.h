@@ -1,7 +1,7 @@
 #pragma once
 
 #include "ir.h"
-#include "lexer.h"
+#include "lex.h"
 
 paravm_begin
 

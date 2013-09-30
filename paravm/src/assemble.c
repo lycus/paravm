@@ -1,7 +1,7 @@
 #include <glib.h>
 
 #include "assemble.h"
-#include "opcodes.h"
+#include "opcode.h"
 
 static void free_hash_table(void *ht)
 {

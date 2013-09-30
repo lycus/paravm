@@ -1,7 +1,7 @@
 #pragma once
 
 #include "error.h"
-#include "opcodes.h"
+#include "opcode.h"
 
 paravm_begin
 

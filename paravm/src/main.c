@@ -3,7 +3,7 @@
 #include <glib.h>
 #include <glib/gprintf.h>
 
-#include "internal/tools.h"
+#include "internal/tool.h"
 
 int opt_version;
 int opt_help;

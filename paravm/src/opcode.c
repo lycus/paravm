@@ -1,6 +1,6 @@
 #include <glib.h>
 
-#include "opcodes.h"
+#include "opcode.h"
 
 const ParaVMOpCode paravm_op_app = { "app", 0x00, 3, PARAVM_OPERAND_TYPE_ARGS, PARAVM_CONTROL_FLOW_NONE };
 const ParaVMOpCode paravm_op_ret = { "ret", 0x01, 1, PARAVM_OPERAND_TYPE_NONE, PARAVM_CONTROL_FLOW_RETURN };

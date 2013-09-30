@@ -13,8 +13,8 @@ libparavm_la_SOURCES = \
 	src/error.c \
 	src/io.c \
 	src/ir.c \
-	src/lexer.c \
-	src/opcodes.c \
+	src/lex.c \
+	src/opcode.c \
 	src/verify.c
 
 libparavm_la_LIBADD = @DEP_LIBS@ @DEP_PKG_LIBS@
@@ -32,8 +32,8 @@ libparavminclude_HEADERS = \
 	include/error.h \
 	include/io.h \
 	include/ir.h \
-	include/lexer.h \
-	include/opcodes.h \
+	include/lex.h \
+	include/opcode.h \
 	include/verify.h
 
 pkgconfigdir = $(libdir)/pkgconfig
@@ -42,10 +42,10 @@ pkgconfig_DATA = pc/paravm.pc
 bin_PROGRAMS = paravm
 
 paravm_SOURCES = \
-	include/internal/options.h \
-	include/internal/tools.h \
+	include/internal/option.h \
+	include/internal/tool.h \
 	src/main.c \
-	src/tools.c
+	src/tool.c
 
 paravm_LDADD = @DEP_LIBS@ @DEP_PKG_LIBS@ libparavm.la
 paravm_CFLAGS = @DEP_PKG_CFLAGS@

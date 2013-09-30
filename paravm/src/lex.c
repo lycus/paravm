@@ -4,8 +4,8 @@
 
 #include <glib.h>
 
-#include "lexer.h"
-#include "opcodes.h"
+#include "lex.h"
+#include "opcode.h"
 
 ParaVMToken *paravm_create_token(ParaVMTokenType type, char *value,
                                  uint32_t line, uint32_t column)
