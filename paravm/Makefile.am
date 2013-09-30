@@ -11,6 +11,7 @@ libparavm_la_SOURCES = \
 	src/context.c \
 	src/disassemble.c \
 	src/error.c \
+	src/io.c \
 	src/ir.c \
 	src/lexer.c \
 	src/opcodes.c
@@ -28,6 +29,7 @@ libparavminclude_HEADERS = \
 	include/context.h \
 	include/disassemble.h \
 	include/error.h \
+	include/io.h \
 	include/ir.h \
 	include/lexer.h \
 	include/opcodes.h
