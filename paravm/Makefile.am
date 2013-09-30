@@ -14,7 +14,8 @@ libparavm_la_SOURCES = \
 	src/io.c \
 	src/ir.c \
 	src/lexer.c \
-	src/opcodes.c
+	src/opcodes.c \
+	src/verify.c
 
 libparavm_la_LIBADD = @DEP_LIBS@ @DEP_PKG_LIBS@
 libparavm_la_CFLAGS = @DEP_PKG_CFLAGS@
@@ -32,7 +33,8 @@ libparavminclude_HEADERS = \
 	include/io.h \
 	include/ir.h \
 	include/lexer.h \
-	include/opcodes.h
+	include/opcodes.h \
+	include/verify.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = pc/paravm.pc
