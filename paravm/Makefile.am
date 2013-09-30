@@ -9,6 +9,7 @@ libparavm_la_SOURCES = \
 	src/atom.c \
 	src/common.c \
 	src/context.c \
+	src/disassemble.c \
 	src/error.c \
 	src/ir.c \
 	src/lexer.c \
@@ -25,6 +26,7 @@ libparavminclude_HEADERS = \
 	include/atom.h \
 	include/common.h \
 	include/context.h \
+	include/disassemble.h \
 	include/error.h \
 	include/ir.h \
 	include/lexer.h \
