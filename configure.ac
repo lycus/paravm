@@ -113,6 +113,6 @@ AC_CONFIG_FILES([paravm/pc/paravm.pc:paravm/pc/paravm.pc.in])
 AC_CONFIG_FILES([paravm/man/paravm.1:paravm/man/paravm.1.in])
 
 # We need to add this after the prelude has been generated.
-ADD_CPPFLAGS([-include $srcdir/prelude.h])
+ADD_CPPFLAGS([-include $srcdir/prelude.h -I$srcdir/include])
 
 AC_OUTPUT()
