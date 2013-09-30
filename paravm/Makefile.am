@@ -7,6 +7,7 @@ libparavm_la_SOURCES = \
 	include/internal/common.h \
 	src/common.c \
 	src/error.c \
+	src/ir.c \
 	src/lexer.c \
 	src/opcodes.c
 
@@ -19,6 +20,7 @@ libparavmincludedir = $(includedir)/paravm
 libparavminclude_HEADERS = \
 	include/common.h \
 	include/error.h \
+	include/ir.h \
 	include/lexer.h \
 	include/opcodes.h
 
