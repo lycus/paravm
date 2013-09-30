@@ -44,6 +44,8 @@ const char *paravm_error_to_string(ParaVMError err)
             return "End-of-file reached unexpectedly";
         case PARAVM_ERROR_NONEXISTENT_NAME:
             return "Name is not mapped to a value";
+        case PARAVM_ERROR_ALREADY_SET:
+            return "Property was already set";
         default:
             assert_unreachable();
             return null;

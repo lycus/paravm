@@ -4,9 +4,11 @@
 
 paravm_begin
 
+typedef enum ParaVMError ParaVMError;
+
 /* Defines the various errors that ParaVM APIs can return.
  */
-typedef enum
+enum ParaVMError
 {
     PARAVM_ERROR_OK = 0, // No error.
     PARAVM_ERROR_BAD_UTF8 = 1, // Input UTF-8 was malformed.
@@ -28,7 +30,8 @@ typedef enum
     PARAVM_ERROR_IO = 17, // A physical I/O error occurred.
     PARAVM_ERROR_EOF = 18, // End-of-file was reached unexpectedly.
     PARAVM_ERROR_NONEXISTENT_NAME = 19, // A name was not mapped to a value.
-} ParaVMError;
+    PARAVM_ERROR_ALREADY_SET = 20, // A property was already set.
+};
 
 /* Gets a static string describing `err`. Returns a `NULL`
  * pointer for `PARAVM_ERROR_OK`.
