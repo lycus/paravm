@@ -6,6 +6,7 @@ libparavm_la_SOURCES = \
 	include/internal/atomic.h \
 	include/internal/common.h \
 	src/assemble.c \
+	src/atom.c \
 	src/common.c \
 	src/error.c \
 	src/ir.c \
@@ -20,6 +21,7 @@ libparavmincludedir = $(includedir)/paravm
 
 libparavminclude_HEADERS = \
 	include/assemble.h \
+	include/atom.h \
 	include/common.h \
 	include/error.h \
 	include/ir.h \
