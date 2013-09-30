@@ -1,6 +1,7 @@
 #include <getopt.h>
-#include <stdio.h>
-#include <string.h>
+
+#include <glib.h>
+#include <glib/gprintf.h>
 
 #include "internal/tools.h"
 
@@ -28,7 +29,11 @@ void usage(const char *program)
 {
     assert(program);
 
-    printf("Usage: %s [--version] [--help] [options] <tool> <args>\n", basename(program));
+    const char *base = g_path_get_basename(program);
+
+    g_fprintf(stderr, "Usage: %s [--version] [--help] [options] <tool> <args>\n", base);
+
+    g_free((char *)base);
 }
 
 int main(int argc, char *argv[])
@@ -63,15 +68,15 @@ int main(int argc, char *argv[])
 
     if (opt_version)
     {
-        printf("ParaVM - " PACKAGE_VERSION "\n");
-        printf("Copyright (C) 2013 The Lycus Foundation\n");
-        printf("Available under the terms of the MIT License\n");
+        g_fprintf(stderr, "ParaVM - " PACKAGE_VERSION "\n");
+        g_fprintf(stderr, "Copyright (C) 2013 The Lycus Foundation\n");
+        g_fprintf(stderr, "Available under the terms of the MIT License\n");
     }
 
     if (opt_help)
     {
         usage(argv[0]);
-        printf("Please refer to `man 1 paravm`\n");
+        g_fprintf(stderr, "Please refer to `man 1 paravm`\n");
     }
 
     if (opt_version || opt_help)
@@ -83,7 +88,7 @@ int main(int argc, char *argv[])
 
     if (!argc)
     {
-        printf("Error: No tool name given\n");
+        g_fprintf(stderr, "Error: No tool name given\n");
         return 1;
     }
 
@@ -92,7 +97,7 @@ int main(int argc, char *argv[])
 
     if (!func)
     {
-        printf("Error: Invalid tool name '%s'\n", tool);
+        g_fprintf(stderr, "Error: Invalid tool name '%s'\n", tool);
         return 1;
     }
 
