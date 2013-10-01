@@ -4,11 +4,6 @@
 
 paravm_begin
 
-/* Represents an atom. An atom is simply a unique
- * unsigned 64-bit integer associated with a string.
- */
-typedef uint64_t ParaVMAtom;
-
 typedef struct ParaVMAtomTable ParaVMAtomTable;
 
 /* Represents an atom table that maps strings to atoms
@@ -47,7 +42,7 @@ void paravm_destroy_atom_table(ParaVMAtomTable *table);
 paravm_api
 paravm_nothrow
 paravm_nonnull()
-ParaVMAtom paravm_string_to_atom(ParaVMAtomTable *table, const char *str);
+size_t paravm_string_to_atom(ParaVMAtomTable *table, const char *str);
 
 /* Gets the string associated with `atom` in `table`.
  *
@@ -60,7 +55,7 @@ ParaVMAtom paravm_string_to_atom(ParaVMAtomTable *table, const char *str);
 paravm_api
 paravm_nothrow
 paravm_nonnull()
-const char *paravm_atom_to_string(const ParaVMAtomTable *table, ParaVMAtom atom);
+const char *paravm_atom_to_string(const ParaVMAtomTable *table, size_t atom);
 
 /* Erases `atom` from `table`. Be careful with this
  * operation as erasing atoms that are in use can
@@ -70,7 +65,7 @@ const char *paravm_atom_to_string(const ParaVMAtomTable *table, ParaVMAtom atom)
 paravm_api
 paravm_nothrow
 paravm_nonnull()
-void paravm_erase_atom(const ParaVMAtomTable *table, ParaVMAtom atom);
+void paravm_erase_atom(const ParaVMAtomTable *table, size_t atom);
 
 /* Clears `table` of all atoms. Be careful with this
  * operation as erasing atoms that are in use can

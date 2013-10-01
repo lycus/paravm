@@ -46,14 +46,14 @@ void paravm_destroy_atom_table(ParaVMAtomTable *table)
     g_free((ParaVMAtomTable *)table);
 }
 
-ParaVMAtom paravm_string_to_atom(ParaVMAtomTable *table, const char *str)
+size_t paravm_string_to_atom(ParaVMAtomTable *table, const char *str)
 {
     assert(table);
     assert(str);
 
     g_mutex_lock(table->mutex);
 
-    ParaVMAtom *existing = g_hash_table_lookup(table->str_to_atom, str);
+    size_t *existing = g_hash_table_lookup(table->str_to_atom, str);
 
     if (existing)
     {
@@ -61,23 +61,23 @@ ParaVMAtom paravm_string_to_atom(ParaVMAtomTable *table, const char *str)
         return *existing;
     }
 
-    ParaVMAtom *slot = g_queue_pop_head(table->reuse_queue);
+    size_t *slot = g_queue_pop_head(table->reuse_queue);
 
     if (!slot)
     {
-        slot = g_new(ParaVMAtom, 1);
+        slot = g_new(size_t, 1);
         *slot = table->next_id++;
     }
 
     g_hash_table_insert(table->str_to_atom, g_strdup(str), slot);
-    g_hash_table_insert(table->atom_to_str, g_memdup(slot, sizeof(ParaVMAtom)), g_strdup(str));
+    g_hash_table_insert(table->atom_to_str, g_memdup(slot, sizeof(size_t)), g_strdup(str));
 
     g_mutex_unlock(table->mutex);
 
     return 0;
 }
 
-const char *paravm_atom_to_string(const ParaVMAtomTable *table, ParaVMAtom atom)
+const char *paravm_atom_to_string(const ParaVMAtomTable *table, size_t atom)
 {
     assert(table);
 
@@ -90,7 +90,7 @@ const char *paravm_atom_to_string(const ParaVMAtomTable *table, ParaVMAtom atom)
     return str;
 }
 
-void paravm_erase_atom(const ParaVMAtomTable *table, ParaVMAtom atom)
+void paravm_erase_atom(const ParaVMAtomTable *table, size_t atom)
 {
     assert(table);
 
@@ -103,7 +103,7 @@ void paravm_erase_atom(const ParaVMAtomTable *table, ParaVMAtom atom)
         g_hash_table_remove(table->str_to_atom, str);
         g_hash_table_remove(table->atom_to_str, &atom);
 
-        ParaVMAtom *slot = g_new(ParaVMAtom, 1);
+        size_t *slot = g_new(size_t, 1);
         *slot = atom;
 
         g_queue_push_tail(table->reuse_queue, slot);
