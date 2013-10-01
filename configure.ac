@@ -37,9 +37,12 @@ AC_DEFUN([CHECK_LIB],
 
      AC_LINK_IFELSE([AC_LANG_PROGRAM([], [])],
          [DEP_LIBS="$DEP_LIBS -l$1"
+          have_lib$2=yes
 
           AC_MSG_RESULT([yes])],
-         [$2])
+         [have_lib$2=no
+
+          $3])
 
      LDFLAGS="$orig_ldflags"])
 
@@ -50,13 +53,15 @@ AC_DEFUN([CHECK_PKG],
      DEP_PKG_CFLAGS="$DEP_PKG_CFLAGS $$1_CFLAGS"
      DEP_PKG_LIBS="$DEP_PKG_LIBS $$1_LIBS"])
 
-CHECK_LIB([dl], [AC_MSG_FAILURE([libdl is not available])])
-CHECK_LIB([m], [AC_MSG_FAILURE([libm is not available])])
-CHECK_LIB([pthread], [AC_MSG_FAILURE([libpthread is not available])])
-CHECK_LIB([BlocksRuntime], [AC_MSG_FAILURE([libBlocksRuntime is not available])])
-CHECK_LIB([gmp], [AC_MSG_FAILURE([libgmp is not available])])
-CHECK_LIB([e-hal], [AC_MSG_RESULT([no (building without the JIT compiler)])
-                    AC_DEFINE([PARAVM_EMULATE], [1], [Define to 1 if libe-hal is not available.])])
+CHECK_LIB([dl], [dl], [AC_MSG_FAILURE([libdl is not available])])
+CHECK_LIB([m], [m], [AC_MSG_FAILURE([libm is not available])])
+CHECK_LIB([pthread], [pthread], [AC_MSG_FAILURE([libpthread is not available])])
+CHECK_LIB([BlocksRuntime], [blocksruntime], [AC_MSG_FAILURE([libBlocksRuntime is not available])])
+CHECK_LIB([gmp], [gmp], [AC_MSG_FAILURE([libgmp is not available])])
+CHECK_LIB([e-hal], [e_hal], [AC_MSG_RESULT([no (building without the JIT compiler)])
+                             AC_DEFINE([PARAVM_EMULATE], [1], [Define to 1 if libe-hal is not available.])])
+
+AM_CONDITIONAL([PARAVM_EMULATE], [test "x$have_libe_hal" = "xno"])
 
 CHECK_PKG([libglib], [glib-2.0])
 CHECK_PKG([libffi], [libffi])
