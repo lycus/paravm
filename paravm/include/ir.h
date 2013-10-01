@@ -5,6 +5,41 @@
 
 paravm_begin
 
+typedef struct ParaVMModule ParaVMModule;
+
+/* Describes a module. These are collections of functions and
+ * mainly serve as versionable containers.
+ */
+struct ParaVMModule
+{
+    const char *name; // The name of the module, e.g. `foo` for `/bar/foo.pvc`.
+
+    const void *function_table; // Private. Do not use.
+    const void *function_list; // Private. Do not use.
+};
+
+typedef struct ParaVMFunction ParaVMFunction;
+
+/* Describes a function. These consist of a set of arguments,
+ * a set of virtual registers, and a set of basic blocks that
+ * contain the instructions to be executed.
+ *
+ * In reality, an argument is just a virtual register with a
+ * flag set that indicates that it's an incoming value.
+ */
+struct ParaVMFunction
+{
+    const ParaVMModule *module; // Module that the function is in.
+    const char *name; // The name of the function.
+
+    const void *argument_table; // Private. Do not use.
+    const void *argument_list; // Private. Do not use.
+    const void *register_table; // Private. Do not use.
+    const void *register_list; // Private. Do not use.
+    const void *block_table; // Private. Do not use.
+    const void *block_list; // Private. Do not use.
+};
+
 typedef struct ParaVMRegister ParaVMRegister;
 
 /* Describes a virtual register. Functions can theoretically
@@ -13,6 +48,7 @@ typedef struct ParaVMRegister ParaVMRegister;
  */
 struct ParaVMRegister
 {
+    const ParaVMFunction *function; // Function that the register is in.
     const char *name; // The name of the register.
     bool argument; // Is the register a function argument?
 };
@@ -26,6 +62,7 @@ typedef struct ParaVMBlock ParaVMBlock;
  */
 struct ParaVMBlock
 {
+    const ParaVMFunction *function; // Function that the block is in.
     const char *name; // The name of the block.
     const ParaVMBlock *handler; // Block to transfer control to if an exception is raised.
     const ParaVMRegister *exception; // Register to assign exception to.
@@ -56,46 +93,13 @@ typedef struct ParaVMInstruction ParaVMInstruction;
  */
 struct ParaVMInstruction
 {
+    const ParaVMBlock *block; // Block that this instruction is in.
     const ParaVMOpCode *opcode; // The opcode the instruction executes.
     ParaVMOperand operand; // The operand of the instruction.
     bool own_operand; // Whether the operand's lifetime is managed by this instruction.
     const ParaVMRegister *register1; // The first register, if any.
     const ParaVMRegister *register2; // The second register, if any.
     const ParaVMRegister *register3; // The third register, if any.
-};
-
-typedef struct ParaVMFunction ParaVMFunction;
-
-/* Describes a function. These consist of a set of arguments,
- * a set of virtual registers, and a set of basic blocks that
- * contain the instructions to be executed.
- *
- * In reality, an argument is just a virtual register with a
- * flag set that indicates that it's an incoming value.
- */
-struct ParaVMFunction
-{
-    const char *name; // The name of the function.
-
-    const void *argument_table; // Private. Do not use.
-    const void *argument_list; // Private. Do not use.
-    const void *register_table; // Private. Do not use.
-    const void *register_list; // Private. Do not use.
-    const void *block_table; // Private. Do not use.
-    const void *block_list; // Private. Do not use.
-};
-
-typedef struct ParaVMModule ParaVMModule;
-
-/* Describes a module. These are collections of functions and
- * mainly serve as versionable containers.
- */
-struct ParaVMModule
-{
-    const char *name; // The name of the module, e.g. `foo` for `/bar/foo.pvc`.
-
-    const void *function_table; // Private. Do not use.
-    const void *function_list; // Private. Do not use.
 };
 
 /* Creates a new `ParaVMRegister` with the given values.

@@ -8,6 +8,7 @@ const ParaVMRegister *paravm_create_register(const char *name, bool argument)
 
     ParaVMRegister *r = g_new(ParaVMRegister, 1);
 
+    r->function = null;
     r->name = g_strdup(name);
     r->argument = argument;
 
@@ -48,6 +49,7 @@ const ParaVMInstruction *paravm_create_instruction(const ParaVMOpCode *op,
 
     ParaVMInstruction *i = g_new(ParaVMInstruction, 1);
 
+    i->block = null;
     i->opcode = op;
 
     if (op->operand == PARAVM_OPERAND_TYPE_BLOCK ||
@@ -113,6 +115,7 @@ const ParaVMBlock *paravm_create_block(const char *name)
 
     ParaVMBlock *b = g_new(ParaVMBlock, 1);
 
+    b->function = null;
     b->name = g_strdup(name);
     b->handler = null;
     b->exception = null;
@@ -230,6 +233,7 @@ const ParaVMFunction *paravm_create_function(const char *name)
 
     ParaVMFunction *f = g_new(ParaVMFunction, 1);
 
+    f->module = null;
     f->name = g_strdup(name);
 
     f->argument_table = g_hash_table_new(&g_str_hash, &g_str_equal);
@@ -265,9 +269,12 @@ ParaVMError paravm_add_block(const ParaVMFunction *func, const ParaVMBlock *bloc
 {
     assert(func);
     assert(block);
+    assert(!block->function);
 
     if (g_hash_table_lookup((GHashTable *)func->block_table, block->name))
         return PARAVM_ERROR_NAME_EXISTS;
+
+    ((ParaVMBlock *)block)->function = func;
 
     g_hash_table_insert((GHashTable *)func->block_table, (char *)block->name,
                         (ParaVMBlock *)block);
@@ -302,9 +309,12 @@ ParaVMError paravm_add_register(const ParaVMFunction *func, const ParaVMRegister
 {
     assert(func);
     assert(reg);
+    assert(!reg->function);
 
     if (g_hash_table_lookup((GHashTable *)func->register_table, reg->name))
         return PARAVM_ERROR_NAME_EXISTS;
+
+    ((ParaVMRegister *)reg)->function = func;
 
     g_hash_table_insert((GHashTable *)func->register_table,
                         (char *)reg->name, (ParaVMRegister *)reg);
@@ -399,6 +409,8 @@ ParaVMError paravm_add_function(const ParaVMModule *mod, const ParaVMFunction *f
 
     if (g_hash_table_lookup((GHashTable *)mod->function_table, func->name))
         return PARAVM_ERROR_NAME_EXISTS;
+
+    ((ParaVMFunction *)func)->module = mod;
 
     g_hash_table_insert((GHashTable *)mod->function_table,
                         (char *)func->name, (ParaVMFunction *)func);
