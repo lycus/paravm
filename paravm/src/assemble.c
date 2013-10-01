@@ -263,9 +263,9 @@ ParaVMError paravm_assemble_tokens(ParaVMToken **tokens, const ParaVMModule *mod
 
                             break;
                         }
-                        case PARAVM_OPERAND_TYPE_BITS:
+                        case PARAVM_OPERAND_TYPE_BINARY:
                         {
-                            NEXT_TOKEN(oper, BITS);
+                            NEXT_TOKEN(oper, BINARY);
                             operand.string = oper->value;
 
                             break;
@@ -366,7 +366,7 @@ ParaVMError paravm_assemble_tokens(ParaVMToken **tokens, const ParaVMModule *mod
                         case PARAVM_OPERAND_TYPE_INTEGER:
                         case PARAVM_OPERAND_TYPE_FLOAT:
                         case PARAVM_OPERAND_TYPE_ATOM:
-                        case PARAVM_OPERAND_TYPE_BITS:
+                        case PARAVM_OPERAND_TYPE_BINARY:
                         case PARAVM_OPERAND_TYPE_ARGS:
                             oper.raw = orig_insn->operand.raw;
                             own = true;

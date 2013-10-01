@@ -14,7 +14,7 @@ enum ParaVMTokenType
     PARAVM_TOKEN_TYPE_ATOM = 1, // An atom such as `'foo'`.
     PARAVM_TOKEN_TYPE_INTEGER = 2, // An integer such as `123`.
     PARAVM_TOKEN_TYPE_FLOAT = 3, // A float such as `123.321`.
-    PARAVM_TOKEN_TYPE_BITS = 4, // A bit vector such as `:11011011011001101:`.
+    PARAVM_TOKEN_TYPE_BINARY = 4, // A binary such as `:11011011011001101:`.
     PARAVM_TOKEN_TYPE_FUN = 5, // The `.fun` directive.
     PARAVM_TOKEN_TYPE_ARG = 6, // The `.arg` directive.
     PARAVM_TOKEN_TYPE_REG = 7, // The `.reg` directive.

@@ -186,7 +186,7 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken ***tokens,
 
                 break;
             case CHAR_COLON:
-                tt = PARAVM_TOKEN_TYPE_BITS;
+                tt = PARAVM_TOKEN_TYPE_BINARY;
 
                 while (true)
                 {

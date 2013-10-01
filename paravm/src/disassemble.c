@@ -192,7 +192,7 @@ ParaVMError paravm_disassemble_module(const ParaVMModule *mod, const char *path)
                             write_str(&sjlj, f, exc, del_a, (*ins)->operand.string);
 
                             break;
-                        case PARAVM_OPERAND_TYPE_BITS:
+                        case PARAVM_OPERAND_TYPE_BINARY:
                             write_str(&sjlj, f, null, del_b, (*ins)->operand.string);
 
                             break;

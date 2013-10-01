@@ -14,7 +14,7 @@ enum ParaVMOperandType
     PARAVM_OPERAND_TYPE_INTEGER = 1, // An integer literal.
     PARAVM_OPERAND_TYPE_FLOAT = 2, // A floating point literal.
     PARAVM_OPERAND_TYPE_ATOM = 3, // An atom literal.
-    PARAVM_OPERAND_TYPE_BITS = 4, // A bit vector or byte array.
+    PARAVM_OPERAND_TYPE_BINARY = 4, // A binary literal.
     PARAVM_OPERAND_TYPE_ARGS = 5, // An argument list.
     PARAVM_OPERAND_TYPE_BLOCK = 6, // A basic block.
     PARAVM_OPERAND_TYPE_BLOCKS = 7, // Two basic blocks.
