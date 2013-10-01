@@ -114,6 +114,8 @@ const ParaVMBlock *paravm_create_block(const char *name)
     ParaVMBlock *b = g_new(ParaVMBlock, 1);
 
     b->name = g_strdup(name);
+    b->handler = null;
+    b->exception = null;
 
     b->instruction_list = g_array_new(true, false, sizeof(ParaVMInstruction *));
 
