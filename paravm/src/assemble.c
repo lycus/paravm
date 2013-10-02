@@ -5,16 +5,22 @@
 
 static void free_hash_table(void *ht)
 {
+    assert(ht);
+
     g_hash_table_destroy(ht);
 }
 
 static void free_ptr_array(void *arr)
 {
+    assert(arr);
+
     g_ptr_array_free(arr, true);
 }
 
 static void free_instruction(void *insn)
 {
+    assert(insn);
+
     const ParaVMInstruction *ins = (const ParaVMInstruction *)insn;
 
     if (ins->opcode->operand == PARAVM_OPERAND_TYPE_ARGS)
