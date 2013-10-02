@@ -14,7 +14,7 @@ struct ParaVMAtomTable
 {
     void *str_to_atom; // Private. Do not use.
     void *atom_to_str; // Private. Do not use.
-    void *mutex; // Private. Do not use.
+    void *rw_lock; // Private. Do not use.
     uint64_t next_id; // Private. Do not use.
     void *reuse_queue; // Private. Do not use.
 };
