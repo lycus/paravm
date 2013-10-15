@@ -78,9 +78,7 @@ typedef union ParaVMOperand ParaVMOperand;
  */
 union ParaVMOperand
 {
-    const void *raw; // Raw pointer to the operand. Should generally be avoided.
     const char *string; // Pointer to a string operand.
-    const char *const *args; // Pointer to an argument list operand. /* FIXME */
     const ParaVMBlock *block; // Pointer to a basic block operand.
     const ParaVMBlock *blocks[2]; // Pointers to basic block operands.
 };
@@ -97,9 +95,8 @@ struct ParaVMInstruction
     const ParaVMOpCode *opcode; // The opcode the instruction executes.
     ParaVMOperand operand; // The operand of the instruction.
     bool own_operand; // Whether the operand's lifetime is managed by this instruction.
-    const ParaVMRegister *register1; // The first register, if any.
-    const ParaVMRegister *register2; // The second register, if any.
-    const ParaVMRegister *register3; // The third register, if any.
+
+    const void *registers; // Private. Do not use.
 };
 
 /* Creates a new `ParaVMRegister` with the given values.
@@ -143,15 +140,30 @@ paravm_nonnull(1)
 const ParaVMInstruction *paravm_create_instruction(const ParaVMOpCode *op,
                                                    ParaVMOperand operand,
                                                    bool own_operand,
-                                                   const ParaVMRegister *reg1,
-                                                   const ParaVMRegister *reg2,
-                                                   const ParaVMRegister *reg3);
+                                                   const ParaVMRegister *const *registers);
 
 /* Destroys `insn` if it is not `NULL`.
  */
 paravm_api
 paravm_nothrow
 void paravm_destroy_instruction(const ParaVMInstruction *insn);
+
+/* Gets a `NULL`-terminated array of registers that `insn`
+ * operates on. The returned pointer points into `insn`, so
+ * it is tied to `insn`'s lifetime and does not need to be
+ * freed.
+ */
+paravm_api
+paravm_nothrow
+paravm_nonnull()
+const ParaVMRegister *const *paravm_get_instruction_registers(const ParaVMInstruction *insn);
+
+/* Gets the number of registers that `insn` operates on.
+ */
+paravm_api
+paravm_nothrow
+paravm_nonnull()
+size_t paravm_get_instruction_register_count(const ParaVMInstruction *insn);
 
 /* Creates a new `ParaVMBlock` with the given value. `name`
  * is copied, so it needs to be freed by the caller.

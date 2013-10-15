@@ -15,9 +15,8 @@ enum ParaVMOperandType
     PARAVM_OPERAND_TYPE_FLOAT = 2, // A floating point literal.
     PARAVM_OPERAND_TYPE_ATOM = 3, // An atom literal.
     PARAVM_OPERAND_TYPE_BINARY = 4, // A binary literal.
-    PARAVM_OPERAND_TYPE_ARGS = 5, // An argument list.
-    PARAVM_OPERAND_TYPE_BLOCK = 6, // A basic block.
-    PARAVM_OPERAND_TYPE_BLOCKS = 7, // Two basic blocks.
+    PARAVM_OPERAND_TYPE_BLOCK = 5, // A basic block.
+    PARAVM_OPERAND_TYPE_BLOCKS = 6, // Two basic blocks.
 };
 
 typedef enum ParaVMControlFlow ParaVMControlFlow;
@@ -40,7 +39,8 @@ struct ParaVMOpCode
 {
     const char *name; // The name of the opcode.
     uint8_t code; // The byte code of the opcode.
-    uint8_t registers; // The number of registers the opcode operates on.
+    uint8_t registers; // The number of registers the opcode requires.
+    bool variable_registers; // Whether any number of additional registers can be given.
     ParaVMOperandType operand; // The kind of operand the opcode expects.
     ParaVMControlFlow control_flow; // The control flow effect of the opcode.
 };

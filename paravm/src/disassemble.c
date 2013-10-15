@@ -159,22 +159,12 @@ ParaVMError paravm_disassemble_module(const ParaVMModule *mod, const char *path)
             {
                 write(&sjlj, f, (*ins)->opcode->name);
 
-                if ((*ins)->register1)
+                for (const ParaVMRegister *const *reg = (*ins)->registers; *reg; reg++)
                 {
-                    write(&sjlj, f, " ");
-                    write_str(&sjlj, f, exc, del_s, (*ins)->register1->name);
-                }
+                    write_str(&sjlj, f, exc, del_s, (*reg)->name);
 
-                if ((*ins)->register2)
-                {
-                    write(&sjlj, f, " ");
-                    write_str(&sjlj, f, exc, del_s, (*ins)->register2->name);
-                }
-
-                if ((*ins)->register3)
-                {
-                    write(&sjlj, f, " ");
-                    write_str(&sjlj, f, exc, del_s, (*ins)->register3->name);
+                    if (*(reg + 1))
+                        write(&sjlj, f, " ");
                 }
 
                 if ((*ins)->opcode->operand != PARAVM_OPERAND_TYPE_NONE)
@@ -194,16 +184,6 @@ ParaVMError paravm_disassemble_module(const ParaVMModule *mod, const char *path)
                             break;
                         case PARAVM_OPERAND_TYPE_BINARY:
                             write_str(&sjlj, f, null, del_b, (*ins)->operand.string);
-
-                            break;
-                        case PARAVM_OPERAND_TYPE_ARGS:
-                            for (const char *const *arg = (*ins)->operand.args; *arg; arg++)
-                            {
-                                write_str(&sjlj, f, exc, del_s, *arg);
-
-                                if (*(arg + 1))
-                                    write(&sjlj, f, " ");
-                            }
 
                             break;
                         case PARAVM_OPERAND_TYPE_BLOCK:

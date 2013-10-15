@@ -8,7 +8,7 @@
 
 #include "io.h"
 
-const uint32_t paravm_version = 4;
+const uint32_t paravm_version = 5;
 
 const uint32_t paravm_fourcc = 0x43565000;
 
@@ -198,29 +198,12 @@ ParaVMError paravm_write_module(const ParaVMModule *mod, const char *path)
             for (const ParaVMInstruction *const *ins = paravm_get_instructions(*blk); *ins; ins++)
             {
                 write_u8(&sjlj, f, (*ins)->opcode->code);
+                write_u32(&sjlj, f, (uint32_t)paravm_get_instruction_register_count(*ins));
 
-                if ((*ins)->register1)
-                    write_str(&sjlj, f, (*ins)->register1->name);
+                for (const ParaVMRegister *const *reg = paravm_get_instruction_registers(*ins); *reg; reg++)
+                    write_str(&sjlj, f, (*reg)->name);
 
-                if ((*ins)->register2)
-                    write_str(&sjlj, f, (*ins)->register2->name);
-
-                if ((*ins)->register3)
-                    write_str(&sjlj, f, (*ins)->register3->name);
-
-                if ((*ins)->opcode->operand == PARAVM_OPERAND_TYPE_ARGS)
-                {
-                    uint32_t arg_c = 0;
-
-                    for (const char *const *list = (*ins)->operand.args; *list; list++)
-                        arg_c++;
-
-                    write_u32(&sjlj, f, arg_c);
-
-                    for (const char *const *str = (*ins)->operand.args; *str; str++)
-                        write_str(&sjlj, f, *str);
-                }
-                else if ((*ins)->opcode->operand == PARAVM_OPERAND_TYPE_BLOCKS)
+                if ((*ins)->opcode->operand == PARAVM_OPERAND_TYPE_BLOCKS)
                 {
                     write_str(&sjlj, f, (*ins)->operand.blocks[0]->name);
                     write_str(&sjlj, f, (*ins)->operand.blocks[1]->name);
@@ -390,45 +373,32 @@ ParaVMError paravm_read_module(const char *path, const ParaVMModule *mod)
                     return PARAVM_ERROR_NONEXISTENT_NAME;
                 }
 
-#define READ_REG(NUM) \
-    const ParaVMRegister *reg ## NUM = null; \
-    \
-    if (opc->registers >= NUM) \
-    { \
-        const char *reg_str = read_str(&sjlj, f); \
-        \
-        reg ## NUM = paravm_get_register(fun, reg_str); \
-        g_free((char *)reg_str); \
-        \
-        if (!reg ## NUM) \
-        { \
-            fclose(f); \
-            return PARAVM_ERROR_NONEXISTENT_NAME; \
-        } \
-    }
+                uint32_t insn_reg_c = read_u32(&sjlj, f);
+                GPtrArray *insn_regs = g_ptr_array_new();
 
-                READ_REG(1);
-                READ_REG(2);
-                READ_REG(3);
+                for (uint32_t l = 0; l < insn_reg_c; l++)
+                {
+                    const char *insn_reg_str = read_str(&sjlj, f);
+
+                    const ParaVMRegister *insn_reg = paravm_get_register(fun, insn_reg_str);
+                    g_free((char *)insn_reg_str);
+
+                    if (!insn_reg)
+                    {
+                        g_ptr_array_free(insn_regs, true);
+                        fclose(f);
+                        return PARAVM_ERROR_NONEXISTENT_NAME;
+                    }
+
+                    g_ptr_array_add(insn_regs, (ParaVMRegister *)insn_reg);
+                }
+
+                g_ptr_array_add(insn_regs, null);
 
                 ParaVMOperand operand;
                 bool own_operand = false;
 
-                if (opc->operand == PARAVM_OPERAND_TYPE_ARGS)
-                {
-                    uint32_t oper_c = read_u32(&sjlj, f);
-
-                    const char **arr = g_new(const char *, oper_c + 1);
-
-                    for (uint32_t l = 0; l < oper_c; l++)
-                        arr[l] = read_str(&sjlj, f);
-
-                    arr[oper_c] = null;
-
-                    operand.args = arr;
-                    own_operand = true;
-                }
-                else if (opc->operand == PARAVM_OPERAND_TYPE_BLOCKS)
+                if (opc->operand == PARAVM_OPERAND_TYPE_BLOCKS)
                 {
                     const char *blk_arg_str1 = read_str(&sjlj, f);
                     const char *blk_arg_str2 = read_str(&sjlj, f);
@@ -441,6 +411,7 @@ ParaVMError paravm_read_module(const char *path, const ParaVMModule *mod)
 
                     if (!op_blk1 || !op_blk2)
                     {
+                        g_ptr_array_free(insn_regs, true);
                         fclose(f);
                         return PARAVM_ERROR_NONEXISTENT_NAME;
                     }
@@ -458,6 +429,7 @@ ParaVMError paravm_read_module(const char *path, const ParaVMModule *mod)
 
                     if (!op_blk)
                     {
+                        g_ptr_array_free(insn_regs, true);
                         fclose(f);
                         return PARAVM_ERROR_NONEXISTENT_NAME;
                     }
@@ -473,20 +445,14 @@ ParaVMError paravm_read_module(const char *path, const ParaVMModule *mod)
                 const ParaVMInstruction *ins = paravm_create_instruction(opc,
                                                                          operand,
                                                                          own_operand,
-                                                                         reg1,
-                                                                         reg2,
-                                                                         reg3);
+                                                                         (const ParaVMRegister *const *)insn_regs);
 
-                if (opc->operand == PARAVM_OPERAND_TYPE_ARGS)
-                {
-                    for (const char *const *ptr = operand.args; *ptr; ptr++)
-                        g_free(*(void **)ptr);
+                g_ptr_array_free(insn_regs, true);
 
-                    g_free((void *)operand.raw);
-                }
-                else if (opc->operand != PARAVM_OPERAND_TYPE_BLOCK &&
-                         opc->operand != PARAVM_OPERAND_TYPE_BLOCKS)
-                    g_free((void *)operand.raw);
+                if (opc->operand != PARAVM_OPERAND_TYPE_NONE &&
+                    opc->operand != PARAVM_OPERAND_TYPE_BLOCK &&
+                    opc->operand != PARAVM_OPERAND_TYPE_BLOCKS)
+                    g_free((void *)operand.string);
 
                 paravm_append_instruction(blk, ins);
             }

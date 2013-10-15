@@ -21,11 +21,6 @@ static void free_instruction(void *insn)
 {
     assert(insn);
 
-    const ParaVMInstruction *ins = (const ParaVMInstruction *)insn;
-
-    if (ins->opcode->operand == PARAVM_OPERAND_TYPE_ARGS)
-        g_ptr_array_free((GPtrArray *)ins->operand.raw, true);
-
     paravm_destroy_instruction(insn);
 }
 
@@ -85,6 +80,8 @@ ParaVMError paravm_assemble_tokens(ParaVMToken **tokens, const ParaVMModule *mod
 
     while ((t = next_token()))
     {
+        GPtrArray *insn_regs = null;
+
         switch (t->type)
         {
             case PARAVM_TOKEN_TYPE_FUN:
@@ -219,26 +216,33 @@ ParaVMError paravm_assemble_tokens(ParaVMToken **tokens, const ParaVMModule *mod
                 }
 
                 const ParaVMOpCode *opc = paravm_get_opcode_by_name(t->value);
-                have_regs = true;
+                have_insns = true;
 
-#define NEXT_REG(NUM) \
-    const ParaVMRegister *reg ## NUM = null; \
-    \
-    if (opc->registers >= NUM) \
-    { \
-        NEXT_TOKEN(reg ## NUM ## _tok, STRING); \
-        reg ## NUM = paravm_get_register(func, reg ## NUM ## _tok->value); \
-        \
-        if (!reg ## NUM) \
-        { \
-            result = PARAVM_ERROR_ASSEMBLY; \
-            break; \
-        } \
-    }
+                insn_regs = g_ptr_array_new();
+                ParaVMToken *t2;
 
-                NEXT_REG(1);
-                NEXT_REG(2);
-                NEXT_REG(3);
+                while ((t2 = peek_token()) && t2->type == PARAVM_TOKEN_TYPE_STRING)
+                {
+                    NEXT_TOKEN(reg_tok, STRING);
+
+                    const ParaVMRegister *reg = paravm_get_register(func, reg_tok->value);
+
+                    if (!reg)
+                    {
+                        result = PARAVM_ERROR_ASSEMBLY;
+                        break;
+                    }
+
+                    g_ptr_array_add(insn_regs, (ParaVMRegister *)reg);
+                }
+
+                // Make sure we at least have the required number
+                // of registers that the opcode operates on.
+                if (insn_regs->len < opc->registers)
+                    result = PARAVM_ERROR_ASSEMBLY;
+
+                if (result != PARAVM_ERROR_OK)
+                    break;
 
                 ParaVMOperand operand;
 
@@ -293,23 +297,6 @@ ParaVMError paravm_assemble_tokens(ParaVMToken **tokens, const ParaVMModule *mod
 
                             break;
                         }
-                        case PARAVM_OPERAND_TYPE_ARGS:
-                        {
-                            GPtrArray *arg_arr = g_ptr_array_new();
-                            ParaVMToken *t2;
-
-                            while ((t2 = peek_token()) && t2->type != PARAVM_TOKEN_TYPE_PAREN_CLOSE)
-                            {
-                                NEXT_TOKEN(arg, STRING);
-                                g_ptr_array_add(arg_arr, arg);
-                            }
-
-                            g_ptr_array_add(arg_arr, null);
-
-                            operand.args = (const char *const *)arg_arr;
-
-                            break;
-                        }
                         default:
                             assert_unreachable();
                             break;
@@ -318,7 +305,8 @@ ParaVMError paravm_assemble_tokens(ParaVMToken **tokens, const ParaVMModule *mod
                     NEXT_TOKEN(rpar, PAREN_CLOSE);
                 }
 
-                const ParaVMInstruction *insn = paravm_create_instruction(opc, operand, false, reg1, reg2, reg3);
+                const ParaVMRegister *const *regs = (const ParaVMRegister *const *)insn_regs->pdata;
+                const ParaVMInstruction *insn = paravm_create_instruction(opc, operand, false, regs);
 
                 GHashTable *tab = g_hash_table_lookup(insns, func);
                 GPtrArray *arr = g_hash_table_lookup(tab, block);
@@ -330,6 +318,9 @@ ParaVMError paravm_assemble_tokens(ParaVMToken **tokens, const ParaVMModule *mod
                 result = PARAVM_ERROR_SYNTAX;
                 break;
         }
+
+        if (insn_regs)
+            g_ptr_array_free(insn_regs, true);
 
         if (result != PARAVM_ERROR_OK)
         {
@@ -373,8 +364,7 @@ ParaVMError paravm_assemble_tokens(ParaVMToken **tokens, const ParaVMModule *mod
                         case PARAVM_OPERAND_TYPE_FLOAT:
                         case PARAVM_OPERAND_TYPE_ATOM:
                         case PARAVM_OPERAND_TYPE_BINARY:
-                        case PARAVM_OPERAND_TYPE_ARGS:
-                            oper.raw = orig_insn->operand.raw;
+                            oper.string = orig_insn->operand.string;
                             own = true;
 
                             break;
@@ -401,12 +391,11 @@ ParaVMError paravm_assemble_tokens(ParaVMToken **tokens, const ParaVMModule *mod
                     if (result != PARAVM_ERROR_OK)
                         break;
 
+                    const ParaVMRegister *const *regs = paravm_get_instruction_registers(orig_insn);
                     const ParaVMInstruction *insn = paravm_create_instruction(orig_insn->opcode,
                                                                               oper,
                                                                               own,
-                                                                              orig_insn->register1,
-                                                                              orig_insn->register2,
-                                                                              orig_insn->register3);
+                                                                              regs);
 
                     paravm_append_instruction(key_block, insn);
                 }

@@ -26,26 +26,15 @@ void paravm_destroy_register(const ParaVMRegister *reg)
 const ParaVMInstruction *paravm_create_instruction(const ParaVMOpCode *op,
                                                    ParaVMOperand operand,
                                                    bool own_operand,
-                                                   const ParaVMRegister *reg1,
-                                                   const ParaVMRegister *reg2,
-                                                   const ParaVMRegister *reg3)
+                                                   const ParaVMRegister *const *registers)
 {
     assert(op);
 
     if (op->operand != PARAVM_OPERAND_TYPE_NONE)
-        assert(operand.raw);
+        assert(operand.string);
 
     if (op->operand == PARAVM_OPERAND_TYPE_BLOCKS)
         assert(operand.blocks[1]);
-
-    if (op->registers >= 1)
-        assert(reg1);
-
-    if (op->registers >= 2)
-        assert(reg2);
-
-    if (op->registers >= 3)
-        assert(reg3);
 
     ParaVMInstruction *i = g_new(ParaVMInstruction, 1);
 
@@ -59,38 +48,20 @@ const ParaVMInstruction *paravm_create_instruction(const ParaVMOpCode *op,
         i->operand = operand;
         i->own_operand = false;
     }
-    else if (own_operand)
-    {
-        if (op->operand == PARAVM_OPERAND_TYPE_ARGS)
-        {
-            const char *const *arr = operand.args;
-            size_t len = 0;
-
-            // Not ideal, but eh...
-            for (const char *const *p = arr; *p; p++)
-                len++;
-
-            const char **str_arr = g_new(const char *, len);
-
-            for (const char *const *src = arr, **dst = str_arr; *src; src++, dst++)
-                *dst = g_strdup(*src);
-
-            i->operand.args = str_arr;
-        }
-        else
-            i->operand.string = g_strdup(operand.string);
-
-        i->own_operand = true;
-    }
     else
     {
-        i->operand = operand;
-        i->own_operand = false;
+        if (own_operand)
+            i->operand.string = g_strdup(operand.string);
+        else
+            i->operand = operand;
+
+        i->own_operand = own_operand;
     }
 
-    i->register1 = reg1;
-    i->register2 = reg2;
-    i->register3 = reg3;
+    i->registers = g_array_new(true, false, sizeof(ParaVMRegister *));
+
+    for (const ParaVMRegister *const *reg = registers; *reg; reg++)
+        g_array_append_val((GArray *)i->registers, *reg);
 
     return i;
 }
@@ -99,14 +70,26 @@ void paravm_destroy_instruction(const ParaVMInstruction *insn)
 {
     if (insn && insn->own_operand)
     {
-        if (insn->opcode->operand == PARAVM_OPERAND_TYPE_ARGS)
-            for (const char *const *ptr = insn->operand.args; *ptr; ptr++)
-                g_free(*(void **)ptr);
+        g_free((void *)insn->operand.string);
 
-        g_free((void *)insn->operand.raw);
+        g_array_free((GArray *)insn->registers, true);
     }
 
     g_free((ParaVMInstruction *)insn);
+}
+
+const ParaVMRegister *const *paravm_get_instruction_registers(const ParaVMInstruction *insn)
+{
+    assert(insn);
+
+    return (const ParaVMRegister *const *)((GArray *)insn->registers)->data;
+}
+
+size_t paravm_get_instruction_register_count(const ParaVMInstruction *insn)
+{
+    assert(insn);
+
+    return ((GArray *)insn->registers)->len;
 }
 
 const ParaVMBlock *paravm_create_block(const char *name)
