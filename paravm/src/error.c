@@ -46,6 +46,8 @@ const char *paravm_error_to_string(ParaVMError err)
             return "Name is not mapped to a value";
         case PARAVM_ERROR_ALREADY_SET:
             return "Property was already set";
+        case PARAVM_ERROR_FOURCC:
+            return "Invalid 4-character code value encountered";
         default:
             assert_unreachable();
             return null;

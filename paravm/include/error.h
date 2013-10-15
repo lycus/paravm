@@ -31,6 +31,7 @@ enum ParaVMError
     PARAVM_ERROR_EOF = 18, // End-of-file was reached unexpectedly.
     PARAVM_ERROR_NONEXISTENT_NAME = 19, // A name was not mapped to a value.
     PARAVM_ERROR_ALREADY_SET = 20, // A property was already set.
+    PARAVM_ERROR_FOURCC = 21, // An invalid 4-character code value was encountered.
 };
 
 /* Gets a static string describing `err`. Returns a `NULL`

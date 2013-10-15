@@ -59,6 +59,12 @@ static const ParaVMModule *read_module(const char *path)
     if (io_err != PARAVM_ERROR_OK)
         paravm_destroy_module(mod);
 
+    if (io_err == PARAVM_ERROR_FOURCC)
+    {
+        g_fprintf(stderr, "Error: Could not read '%s': File is not a PVC module\n", path);
+        return null;
+    }
+
     if (io_err == PARAVM_ERROR_NAME_EXISTS ||
         io_err == PARAVM_ERROR_NONEXISTENT_NAME)
     {

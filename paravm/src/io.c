@@ -8,7 +8,9 @@
 
 #include "io.h"
 
-const uint32_t version = 3;
+const uint32_t paravm_version = 4;
+
+const uint32_t paravm_fourcc = 0x43565000;
 
 static ParaVMError errno_to_error(int err)
 {
@@ -158,7 +160,8 @@ ParaVMError paravm_write_module(const ParaVMModule *mod, const char *path)
         return errno_to_error(err);
     }
 
-    write_u32(&sjlj, f, version);
+    write_u32(&sjlj, f, paravm_fourcc);
+    write_u32(&sjlj, f, paravm_version);
     write_u32(&sjlj, f, (uint32_t)paravm_get_function_count(mod));
 
     for (const ParaVMFunction *const *fun = paravm_get_functions(mod); *fun; fun++)
@@ -255,9 +258,17 @@ ParaVMError paravm_read_module(const char *path, const ParaVMModule *mod)
         return err;
     }
 
+    uint32_t mod_4cc = read_u32(&sjlj, f);
+
+    if (mod_4cc != paravm_fourcc)
+    {
+        fclose(f);
+        return PARAVM_ERROR_FOURCC;
+    }
+
     uint32_t mod_ver = read_u32(&sjlj, f);
 
-    if (mod_ver > version)
+    if (mod_ver > paravm_version)
     {
         fclose(f);
         return PARAVM_ERROR_VERSION;

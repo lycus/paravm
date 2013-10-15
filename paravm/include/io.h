@@ -4,7 +4,9 @@
 
 paravm_begin
 
-extern const uint32_t version; // The most recent module version that this VM supports.
+extern const uint32_t paravm_version; // The most recent module version that this VM supports.
+
+extern const uint32_t paravm_fourcc; // The 4-character code used for compiled module files.
 
 /* Writes `mod` to `path` in the binary PVC (Parallella
  * Virtual Code) format. The file is always overwritten
@@ -47,6 +49,8 @@ ParaVMError paravm_write_module(const ParaVMModule *mod, const char *path);
  *
  * Additionally, `PARAVM_ERROR_VERSION` is returned if the
  * module's version is too new for this VM to understand.
+ * `PARAVM_ERROR_FOURCC` may be returned if the file does
+ * not contain the expected 4-character code in its header.
  * `PARAVM_ERROR_NAME_EXISTS` may be returned if the file
  * contains duplicate definitions of various elements such
  * as functions, registers, basic blocks, etc. Finally,
