@@ -252,7 +252,7 @@ ParaVMError paravm_lex_string(const char *str, ParaVMToken ***tokens,
                     {
                         c = peek_char();
 
-                        if (g_unichar_isalpha(c))
+                        if (g_unichar_isalpha(c) || c == CHAR_PERIOD)
                         {
                             c = next_char();
                             g_array_append_val(str_arr, c);
