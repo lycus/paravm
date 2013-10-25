@@ -65,7 +65,6 @@ AM_CONDITIONAL([PARAVM_EMULATE], [test "x$have_libe_hal" = "xno"])
 
 CHECK_PKG([libglib], [glib-2.0])
 CHECK_PKG([libffi], [libffi])
-CHECK_PKG([libgc], [bdw-gc])
 CHECK_PKG([libedit], [libedit])
 
 AC_SUBST([DEP_LIBS])
