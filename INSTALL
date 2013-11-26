@@ -11,7 +11,31 @@ building from Git, do the typical:
     $ ../configure --prefix=/opt/paravm
     $ make
     $ make check
-    $ make install
+    $ sudo make install
 
 If you're cross-compiling, you'll want to skip the make check command. If
 you're building from a tarball, you can skip the autoreconf command.
+
+Note that if you're building with the JIT compiler, ParaVM will need to
+install a helper module into the Linux kernel. This module exposes a
+superuser-only character device (/dev/paravm) used to allocate persistent
+physical memory from the kernel. ParaVM uses this to reserve memory that
+Epiphany accelerator cores can then use reliably.
+
+The kernel module is built separately, following standard out-of-tree kernel
+module practices:
+
+    $ cd paravm/linux
+    $ make
+    $ sudo make install
+    $ sudo modprobe paravm
+
+To upgrade the kernel module at a later time, do:
+
+    $ cd paravm/linux
+    $ make
+    $ sudo make install
+    $ sudo modprobe -r paravm
+    $ sudo modprobe paravm
+
+Only do this when no ParaVM processes are running.

@@ -19,16 +19,21 @@
 
 *~
 
+*.cmd
+*.gz
+*.ko
 *.la
 *.lo
 *.log
-*.o
 *.map
+*.mod.c
+*.o
+*.order
+*.out
 *.pc
 *.plist
-*.out
 *.pvc
-*.gz
+*.symvers
 
 .dirstamp
 Makefile
@@ -36,6 +41,7 @@ Makefile.in
 
 .deps
 .libs
+.tmp_versions
 
 /paravm/paravm
 /paravm/man/paravm.1
