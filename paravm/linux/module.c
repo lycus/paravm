@@ -272,14 +272,27 @@ static struct device *paravm_device;
 
 static void paravm_cleanup(void)
 {
-    device_destroy(paravm_class, MKDEV(paravm_major, 0));
+    if (paravm_device)
+    {
+        device_destroy(paravm_class, MKDEV(paravm_major, 0));
+
+        printk(KERN_DEBUG "ParaVM: Destroyed device '" FILE_NAME "'\n");
+    }
 
     if (paravm_class)
+    {
         class_unregister(paravm_class);
+        class_destroy(paravm_class);
 
-    class_destroy(paravm_class);
+        printk(KERN_DEBUG "ParaVM: Destroyed device class '" FILE_NAME "'\n");
+    }
 
-    unregister_chrdev(paravm_major, FILE_NAME);
+    if (paravm_major)
+    {
+        unregister_chrdev(paravm_major, FILE_NAME);
+
+        printk(KERN_DEBUG "ParaVM: Unregistered character device '" FILE_NAME "' with major '%i'\n", paravm_major);
+    }
 }
 
 static int __init paravm_init(void)
@@ -298,7 +311,7 @@ static int __init paravm_init(void)
         goto abort;
     }
 
-    printk(KERN_DEBUG "ParaVM: Registered device class '" FILE_NAME "'\n");
+    printk(KERN_DEBUG "ParaVM: Created device class '" FILE_NAME "'\n");
 
     if (!(paravm_device = device_create(paravm_class, NULL, MKDEV(paravm_major, 0), NULL, FILE_NAME)))
     {
