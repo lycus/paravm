@@ -299,7 +299,7 @@ static void paravm_cleanup(void)
 
     class_destroy(paravm_class);
 
-	unregister_chrdev(paravm_major, FILE_NAME);
+    unregister_chrdev(paravm_major, FILE_NAME);
 }
 
 static int __init paravm_init(void)
