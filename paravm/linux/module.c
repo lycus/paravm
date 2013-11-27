@@ -293,6 +293,8 @@ static void paravm_cleanup(void)
 
         printk(KERN_DEBUG "ParaVM: Unregistered character device '" FILE_NAME "' with major '%i'\n", paravm_major);
     }
+
+    printk(KERN_INFO "ParaVM: All deinitialization successful");
 }
 
 static int __init paravm_init(void)
