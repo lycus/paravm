@@ -13,17 +13,10 @@ MODULE_AUTHOR("The Lycus Foundation");
 
 #define FILE_NAME "paravm"
 
-enum paravm_type
-{
-    PARAVM_KMALLOC,
-    PARAVM_GFP,
-};
-
 struct paravm_entry
 {
     void *ptr;
     size_t size;
-    enum paravm_type type;
     struct list_head list;
 };
 
@@ -36,17 +29,12 @@ struct paravm_state
 static void paravm_free(struct paravm_entry *entry)
 {
     printk(KERN_DEBUG "ParaVM: Freeing physical address '0x%p' with '%s'\n", entry->ptr,
-           entry->type == PARAVM_KMALLOC ? "kfree" : "free_pages");
+           entry->size >= PAGE_SIZE ? "kfree" : "free_pages");
 
-    switch (entry->type)
-    {
-        case PARAVM_KMALLOC:
-            kfree(entry->ptr);
-            break;
-        case PARAVM_GFP:
-            free_pages((unsigned long)entry->ptr, get_order(entry->size));
-            break;
-    }
+    if (entry->size >= PAGE_SIZE)
+        kfree(entry->ptr);
+    else
+        free_pages((unsigned long)entry->ptr, get_order(entry->size));
 }
 
 static int paravm_open(struct inode *inode, struct file *filp)
@@ -171,7 +159,6 @@ static ssize_t paravm_write(struct file *filp, const char __user *buf, size_t co
             size_t size;
             struct paravm_entry *entry;
             void *ptr;
-            enum paravm_type type;
 
             if (count - sizeof(u8) < sizeof(size_t))
             {
@@ -204,15 +191,9 @@ static ssize_t paravm_write(struct file *filp, const char __user *buf, size_t co
             }
 
             if (size >= PAGE_SIZE)
-            {
                 ptr = (void *)__get_free_pages(GFP_KERNEL, get_order(size));
-                type = PARAVM_GFP;
-            }
             else
-            {
                 ptr = kmalloc(size, GFP_KERNEL);
-                type = PARAVM_KMALLOC;
-            }
 
             if (!ptr)
             {
@@ -224,12 +205,11 @@ static ssize_t paravm_write(struct file *filp, const char __user *buf, size_t co
 
             entry->ptr = ptr;
             entry->size = size;
-            entry->type = type;
 
             list_add_tail(&entry->list, &state->entries);
 
             printk(KERN_DEBUG "ParaVM: Allocated physical address '0x%p' of size '%zu' with '%s'\n",
-                   ptr, size, type == PARAVM_KMALLOC ? "kmalloc" : "__get_free_pages");
+                   ptr, size, size >= PAGE_SIZE ? "kmalloc" : "__get_free_pages");
 
             break;
         }
