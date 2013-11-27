@@ -263,8 +263,9 @@ int chk_tool(int argc, char *argv[])
 
     const ParaVMFunction *o_fun;
     const ParaVMBlock *o_blk;
+    const ParaVMInstruction *o_insn;
 
-    ParaVMVerifierResult ver_res = paravm_verify_module(mod, &o_fun, &o_blk);
+    ParaVMVerifierResult ver_res = paravm_verify_module(mod, &o_fun, &o_blk, &o_insn);
 
     int res = ver_res != PARAVM_VERIFIER_OK;
 
@@ -273,6 +274,13 @@ int chk_tool(int argc, char *argv[])
 
     if (ver_res == PARAVM_VERIFIER_MULTIPLE_TERMINATORS)
         g_fprintf(stderr, "Error: Block '%s' in function '%s' has multiple terminators\n", o_blk->name, o_fun->name);
+
+    if (ver_res == PARAVM_VERIFIER_BAD_ENDIANNESS)
+    {
+        g_fprintf(stderr, "Error: Instruction %s at %zu in %s has bad endianness operand (%s)\n",
+                  o_insn->opcode->name, paravm_get_instruction_index(o_blk, o_insn),
+                  o_blk->name, o_insn->operand.string);
+    }
 
     paravm_destroy_module(mod);
 
