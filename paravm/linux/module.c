@@ -28,7 +28,7 @@ struct paravm_state
 
 static void paravm_free(struct paravm_entry *entry)
 {
-    printk(KERN_DEBUG "ParaVM: Freeing physical address '0x%p' of size '%zu' with '%s'\n",
+    printk(KERN_DEBUG "ParaVM: Freeing address '0x%p' of size '%zu' with '%s'\n",
            entry->ptr, entry->size, entry->size >= PAGE_SIZE ? "free_pages" : "kfree");
 
     if (entry->size >= PAGE_SIZE)
@@ -94,8 +94,7 @@ static ssize_t paravm_read(struct file *filp, char __user *buf, size_t count, lo
     list_for_each_entry(entry, &state->entries, list)
         size++;
 
-    size *= (sizeof(void *) + sizeof(size_t));
-    size += sizeof(size_t);
+    size *= sizeof(void *) + sizeof(void *) + sizeof(size_t);
 
     printk(KERN_DEBUG "ParaVM: Memory map size during read is '%zu'\n", size);
 
@@ -105,14 +104,16 @@ static ssize_t paravm_read(struct file *filp, char __user *buf, size_t count, lo
         goto abort;
     }
 
-    copy_to_user(buf, &size, sizeof(size_t));
-    buf += sizeof(size_t);
-
     list_for_each_entry(entry, &state->entries, list)
     {
-        printk(KERN_DEBUG "ParaVM: Sending physical address '0x%p' of size '%zu'\n", entry->ptr, entry->size);
+        void *phys = (void *)virt_to_phys(entry->ptr);
+
+        printk(KERN_DEBUG "ParaVM: Sending address '0x%p' ('0x%p') of size '%zu'\n", entry->ptr, phys, entry->size);
 
         copy_to_user(buf, &entry->ptr, sizeof(void *));
+        buf += sizeof(void *);
+
+        copy_to_user(buf, &phys, sizeof(void *));
         buf += sizeof(void *);
 
         copy_to_user(buf, &entry->size, sizeof(size_t));
@@ -210,7 +211,7 @@ static ssize_t paravm_write(struct file *filp, const char __user *buf, size_t co
 
             list_add_tail(&entry->list, &state->entries);
 
-            printk(KERN_DEBUG "ParaVM: Allocated physical address '0x%p' of size '%zu' with '%s'\n",
+            printk(KERN_DEBUG "ParaVM: Allocated address '0x%p' of size '%zu' with '%s'\n",
                    ptr, size, size >= PAGE_SIZE ? "__get_free_pages" : "kmalloc");
 
             break;
