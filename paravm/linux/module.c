@@ -28,13 +28,13 @@ struct paravm_state
 
 static void paravm_free(struct paravm_entry *entry)
 {
-    printk(KERN_DEBUG "ParaVM: Freeing physical address '0x%p' with '%s'\n", entry->ptr,
-           entry->size >= PAGE_SIZE ? "kfree" : "free_pages");
+    printk(KERN_DEBUG "ParaVM: Freeing physical address '0x%p' of size '%zu' with '%s'\n",
+           entry->ptr, entry->size, entry->size >= PAGE_SIZE ? "free_pages" : "kfree");
 
     if (entry->size >= PAGE_SIZE)
-        kfree(entry->ptr);
-    else
         free_pages((unsigned long)entry->ptr, get_order(entry->size));
+    else
+        kfree(entry->ptr);
 }
 
 static int paravm_open(struct inode *inode, struct file *filp)
@@ -127,6 +127,8 @@ abort:
 
 #define USER_OP_ALLOC 0x00
 #define USER_OP_FREE 0x01
+#define USER_OP_WRITE 0x02
+#define USER_OP_READ 0x03
 
 static ssize_t paravm_write(struct file *filp, const char __user *buf, size_t count, loff_t *offset)
 {
@@ -209,7 +211,7 @@ static ssize_t paravm_write(struct file *filp, const char __user *buf, size_t co
             list_add_tail(&entry->list, &state->entries);
 
             printk(KERN_DEBUG "ParaVM: Allocated physical address '0x%p' of size '%zu' with '%s'\n",
-                   ptr, size, size >= PAGE_SIZE ? "kmalloc" : "__get_free_pages");
+                   ptr, size, size >= PAGE_SIZE ? "__get_free_pages" : "kmalloc");
 
             break;
         }
@@ -218,6 +220,7 @@ static ssize_t paravm_write(struct file *filp, const char __user *buf, size_t co
             void *ptr;
             struct paravm_entry *entry;
             struct paravm_entry *tmp;
+            bool found = false;
 
             if (count - sizeof(u8) < sizeof(void *))
             {
@@ -235,6 +238,8 @@ static ssize_t paravm_write(struct file *filp, const char __user *buf, size_t co
             {
                 if (entry->ptr == ptr)
                 {
+                    found = true;
+
                     paravm_free(entry);
 
                     list_del(&entry->list);
@@ -243,6 +248,9 @@ static ssize_t paravm_write(struct file *filp, const char __user *buf, size_t co
                     break;
                 }
             }
+
+            if (!found)
+                ret = -EFAULT;
 
             break;
         }
